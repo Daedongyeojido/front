@@ -12,6 +12,8 @@ const Header = styled.div`
     background-repeat: no-repeat;
 `;
 
+
+
 const NavButton = styled.div`
     margin: 10px 0;
     padding: 10px;
