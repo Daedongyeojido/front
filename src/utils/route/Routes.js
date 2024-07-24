@@ -24,13 +24,15 @@ import Tutorial from '../../pages/Home/tutorial/tutorial';
 import Mypage from '../../pages/Home/mypage/index';
 import Signin from '../../pages/Auth/signin/index';
 import Signup from '../../pages/Auth/signup/index';
+import Recommend from '../../pages/Home/recommend/recommend'; //윤해: recommend 추가 
 
 export const routes = [
     { path: '/', element: <Main /> },
     { path: '/tutorial', element: <Tutorial /> },
     { path: '/mypage', element: <Mypage /> },
     { path: '/signup', element: <Signup /> },
-    { path: '/signin', element: <Signin /> }
+    { path: '/signin', element: <Signin /> },
+    { path: '/recommend', element: <Recommend />} //윤해: recommend 추가 
 ];
 
 const RoutesSetting = () => (

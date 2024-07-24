@@ -12,8 +12,6 @@ const Header = styled.div`
     background-repeat: no-repeat;
 `;
 
-
-
 const NavButton = styled.div`
     margin: 10px 0;
     padding: 10px;
@@ -41,6 +39,11 @@ function Home() {
             <NavButton onClick={() => navigate('/mypage')}>
                 마이 페이지 이동
             </NavButton>
+
+            <NavButton onClick={() => navigate('/recommend')}>
+                경로 추천 페이지 이동
+            </NavButton> {/* 윤해: 경로 추천 페이지 추가  */}
+            
             </ContentContainer>
         </PageContainer>
         </>
