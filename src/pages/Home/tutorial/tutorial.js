@@ -3,14 +3,14 @@ import { PageContainer, ContentContainer } from '../../../components/Layout'
 import AppBar from '../../../components/AppBar';
 import TitleBar from '../../../components/TitleBar';
 import TutorialList from '../../../components/TutorialList';
-import GreenHeartImg from '../../../Image/greenheart.png';
+import GreenHeartImg from '../../../Image/GreenHeart.png';
 import styled from 'styled-components';
 
 const GreenHeartIcon = styled.img`
     position: absolute;
     z-index: 1;
-    left: 56.5%;
-    top: 472px; // 이 값을 조정하여 정확한 위치를 설정하세요
+    left: 58%;
+    top: 472px;
     width: 25px;
     height: 25px;
 `
