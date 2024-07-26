@@ -2,11 +2,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import FootPrint from "../../Image/FootPrint.png";
+import Hand from '../../Image/Hand.png';
 import { useNavigate } from "react-router-dom";
 import { PageContainer, ContentContainer } from "../../components/Layout";
 import TopContainer from "../../components/TopContainer";
 import LocationInputs from "../../components/LocationInputs";
 import SearchModal from "../../components/SearchModal";
+import Rank from '../../components/Rank';
 
 const Header = styled.div`
   width: 100%;
@@ -20,11 +22,21 @@ const Header = styled.div`
 const FootPrintImg = styled.img`
   position: absolute;
   z-index: 1;
-  top: 40%;
-  left: 54%;
+  top: 300px; /* 브라우저 크기에 관계없이 고정된 위치 */
+  left: 49%; /* 부모 요소의 중앙으로 정렬 */
+  transform: translateX(50%); /* 이미지의 중앙으로 이동 */
   width: 169px;
 `;
-
+const HandImg = styled.img`
+    width: 34px;
+    height: 34px;
+    margin-left: 10px;
+`
+const RankContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`
 function Home() {
   const [startPoint, setStartPoint] = useState({ name: "", x: 0, y: 0 });
   const [endPoint, setEndPoint] = useState({ name: "", x: 0, y: 0 });
@@ -144,7 +156,7 @@ function Home() {
     <PageContainer>
       <Header />
       <ContentContainer>
-        <FootPrintImg src={FootPrint} alt="Footprint" />
+        <FootPrintImg src={FootPrint}/>
         <TopContainer />
         <LocationInputs
           startPoint={startPoint}
@@ -152,6 +164,11 @@ function Home() {
           handleInputClick={handleInputClick}
           handleGo={handleGo}
         />
+        <RankContainer>
+            <h2>추천 장소 만족도 순위</h2>
+            <HandImg src={Hand}></HandImg>
+        </RankContainer>
+        <Rank></Rank>
       </ContentContainer>
       {showModal && (
         <SearchModal
