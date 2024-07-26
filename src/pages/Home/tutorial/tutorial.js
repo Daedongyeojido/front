@@ -3,7 +3,7 @@ import { PageContainer, ContentContainer } from '../../../components/Layout'
 import AppBar from '../../../components/AppBar';
 import TitleBar from '../../../components/TitleBar';
 import TutorialList from '../../../components/TutorialList';
-import GreenHeartImg from '../../../Image/GreenHeart.png';
+import GreenHeartImg from '../../../Image/greenheart.png';
 import styled from 'styled-components';
 
 const GreenHeartIcon = styled.img`

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Cloud from "../../../Image/Cloud.png";
 import styled from "styled-components";
 import FootPrint from "../../../Image/FootPrint.png";
@@ -13,6 +13,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   position: relative;
 `;
+
 const CloudImg = styled.img`
   width: 100%;
   height: 131px;
@@ -50,17 +51,7 @@ const LogoText = styled.div`
   font-weight: bold;
   margin-right: 20px;
 `;
-// const Button = styled.div`
-//     width: 70px;
-//     height: 40px;
-//     font-size: 13px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background-color: #EEEEEE;
-//     border-radius: 10px;
-//     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
-// `
+
 const LocationContainer = styled.div`
   width: 100%;
   height: 330px;
@@ -73,6 +64,7 @@ const LocationContainer = styled.div`
   position: relative;
   z-index: 2;
 `;
+
 const InputBox = styled.input`
   width: 80%;
   height: 40px;
@@ -102,7 +94,7 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; // 높은 z-index 값을 추가
+  z-index: 1000;
 `;
 
 const ModalContent = styled.div`
@@ -112,7 +104,7 @@ const ModalContent = styled.div`
   width: 80%;
   max-height: 80%;
   overflow-y: auto;
-  z-index: 1001; // Modal보다 더 높은 z-index 값을 추가
+  z-index: 1001;
 `;
 
 const SearchResult = styled.div`
@@ -123,6 +115,12 @@ const SearchResult = styled.div`
   }
 `;
 
+const MapContainer = styled.div`
+  width: 100%;
+  height: 300px;
+  margin-bottom: 20px;
+`;
+
 function Recommend() {
   const [startPoint, setStartPoint] = useState({ name: "", x: 0, y: 0 });
   const [endPoint, setEndPoint] = useState({ name: "", x: 0, y: 0 });
@@ -131,6 +129,8 @@ function Recommend() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isStartSearch, setIsStartSearch] = useState(true);
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -151,6 +151,17 @@ function Recommend() {
     };
   }, []);
 
+  const initializeMap = () => {
+    if (!kakaoLoaded) return;
+
+    const container = document.getElementById("map");
+    const options = {
+      center: new kakao.maps.LatLng(37.566826, 126.9786567),
+      level: 3,
+    };
+    mapRef.current = new kakao.maps.Map(container, options);
+  };
+
   const handleSearch = () => {
     if (!kakaoLoaded) return;
 
@@ -158,6 +169,18 @@ function Recommend() {
     ps.keywordSearch(searchKeyword, (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
         setSearchResults(data);
+        
+        const firstResult = data[0];
+        const moveLatLng = new kakao.maps.LatLng(firstResult.y, firstResult.x);
+        mapRef.current.setCenter(moveLatLng);
+        
+        if (markerRef.current) {
+          markerRef.current.setMap(null);
+        }
+        markerRef.current = new kakao.maps.Marker({
+          position: moveLatLng,
+          map: mapRef.current,
+        });
       }
     });
   };
@@ -176,6 +199,7 @@ function Recommend() {
     setShowModal(true);
     setSearchResults([]);
     setSearchKeyword("");
+    setTimeout(initializeMap, 0);
   };
 
   const handleGo = () => {
@@ -242,6 +266,7 @@ function Recommend() {
       {showModal && (
         <Modal>
           <ModalContent>
+            <MapContainer id="map" />
             <InputBox
               placeholder="장소를 검색하세요"
               value={searchKeyword}
