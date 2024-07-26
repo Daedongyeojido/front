@@ -7,22 +7,23 @@ import { PageContainer, ContentContainer } from "../../components/Layout";
 import TopContainer from "../../components/TopContainer";
 import LocationInputs from "../../components/LocationInputs";
 import SearchModal from "../../components/SearchModal";
+// import axios from 'axios';
 
 const Header = styled.div`
-  width: 100%;
-  height: 200px;
-  background-image: url("/Images/cloud.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+    width: 100%;
+    height: 200px;
+    background-image: url("/Images/cloud.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 `;
 
 const FootPrintImg = styled.img`
-  position: absolute;
-  z-index: 1;
-  top: 40%;
-  left: 54%;
-  width: 169px;
+    position: absolute;
+    z-index: 1;
+    top: 40%;
+    left: 54%;
+    width: 169px;
 `;
 
 function Home() {
@@ -137,7 +138,14 @@ function Home() {
   };
 
   const handleGo = () => {
-    navigate("/map", { state: { startPoint, endPoint } });
+    if (startPoint.name && endPoint.name) {
+      navigate('/map', { 
+        state: { 
+          startPoint,
+          endPoint
+        } 
+      });
+    }
   };
 
   return (
