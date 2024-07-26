@@ -36,7 +36,9 @@ const InputBox = styled.input`
   }
 `;
 
+
 const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) => (
+
   <Container>
     <InputBox
       placeholder="출발지를 입력해주세요"
@@ -56,7 +58,7 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) =>
       width="60%"
       height="49px"
       borderradius="30px"
-      backgroundcolor="#789DDD"
+      backgroundColor="#789DDD"
       onClick={handleGo}
     >
       GO
