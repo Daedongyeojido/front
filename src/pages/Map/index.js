@@ -6,6 +6,9 @@ import { PageContainer, ContentContainer } from '../../components/Layout';
 import AppBar from '../../components/AppBar';
 import Button from '../../components/Button';
 import Pointer from '../../Image/pointer.png'
+import StartPoint from '../../Image/startpoint.png'
+import EndPoint from '../../Image/endpoint.png'
+
 
 const RouteInfoContainer = styled.div`
   position: relative;
@@ -83,9 +86,19 @@ function Map() {
         if (startPoint && endPoint) {
           const bounds = new kakao.maps.LatLngBounds();
 
+          const startMarkerImage = new kakao.maps.MarkerImage(
+            StartPoint, 
+            new kakao.maps.Size(20, 20), 
+            {
+              offset: new kakao.maps.Point(10, 10), // 이미지 중앙에 좌표를 일치시킴
+              alt: "출발지: 보라색 마커"
+            }
+          );
+
           // 출발지 마커와 인포윈도우
           const startMarker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(startPoint.y, startPoint.x),
+            image: startMarkerImage,
             map: map,
           });
           bounds.extend(new kakao.maps.LatLng(startPoint.y, startPoint.x));
@@ -94,9 +107,19 @@ function Map() {
             content: `<div style="padding:5px;">출발지: ${startPoint.name}</div>`
           });
 
+          const endMarkerImage = new kakao.maps.MarkerImage(
+            EndPoint, 
+            new kakao.maps.Size(20, 20), 
+            {
+              offset: new kakao.maps.Point(10, 10), 
+              alt: "도착지: 초록색 마커"
+            }
+          );
+
           // 도착지 마커와 인포윈도우
           const endMarker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(endPoint.y, endPoint.x),
+            image: endMarkerImage,
             map: map,
           });
           bounds.extend(new kakao.maps.LatLng(endPoint.y, endPoint.x));
