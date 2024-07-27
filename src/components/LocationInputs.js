@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Button from "./Button";
 import Departure from '../Image/DepartureImg.png';
 import Arrival from '../Image/ArrivalImg.png';
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -48,9 +49,19 @@ const InputBox = styled.input`
     border-color: #789ddd;
   }
 `;
+const LocationInputs = ({ startPoint, endPoint, handleInputClick }) => {
+  const navigate = useNavigate();
 
-const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) => {
-  const isInputComplete = startPoint.name && endPoint.name;
+  const handleGo = () => {
+    if (startPoint.name && endPoint.name) {
+      navigate('/map', { 
+        state: { 
+          startPoint,
+          endPoint
+        } 
+      });
+    }
+  };
 
   return (
     <Container>
@@ -80,9 +91,9 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) =>
         width="60%"
         height="49px"
         borderradius="30px"
-        backgroundColor={isInputComplete ? "#789DDD" : "#CCCCCC"}
+        backgroundColor={startPoint.name && endPoint.name ? "#789DDD" : "#CCCCCC"}
         onClick={handleGo}
-        disabled={!isInputComplete}
+        disabled={!startPoint.name || !endPoint.name}
       >
         GO
       </Button>
