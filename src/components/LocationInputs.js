@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Button from "./Button";
 import Departure from '../Image/DepartureImg.png';
 import Arrival from '../Image/ArrivalImg.png';
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -16,19 +17,20 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
+  margin-bottom: 20px;
 `;
 
 const InputContainer = styled.div`
   width: 85%;
   height: 50px;
-  background-color: #eeeeee;
-  border-radius: 10px;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+  background-color: #FBFBFB;
+  border-radius: 30px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 15px;
-  margin: 10px 0;
+  margin: 10px;
 `;
 
 const Icon = styled.img`
@@ -48,9 +50,19 @@ const InputBox = styled.input`
     border-color: #789ddd;
   }
 `;
+const LocationInputs = ({ startPoint, endPoint, handleInputClick }) => {
+  const navigate = useNavigate();
 
-const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) => {
-  const isInputComplete = startPoint.name && endPoint.name;
+  const handleGo = () => {
+    if (startPoint.name && endPoint.name) {
+      navigate('/map', { 
+        state: { 
+          startPoint,
+          endPoint
+        } 
+      });
+    }
+  };
 
   return (
     <Container>
@@ -80,9 +92,9 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleGo }) =>
         width="60%"
         height="49px"
         borderradius="30px"
-        backgroundColor={isInputComplete ? "#789DDD" : "#CCCCCC"}
+        backgroundColor={startPoint.name && endPoint.name ? "#789DDD" : "#CCCCCC"}
         onClick={handleGo}
-        disabled={!isInputComplete}
+        disabled={!startPoint.name || !endPoint.name}
       >
         GO
       </Button>

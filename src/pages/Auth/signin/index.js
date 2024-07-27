@@ -1,7 +1,7 @@
     import React, { useState } from 'react';
     import { useRecoilState } from 'recoil';
     import styled from 'styled-components';
-    import logo from './logo.png'
+    import TextLogo from './textLogo.png'
     import { userState } from '../../../recoils/Auth';
     import { PageContainer, ContentContainer } from '../../../components/Layout';
     import LoginTextFrom from '../../../components/Input';
@@ -13,8 +13,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 150px;
-    margin-bottom: 70px;
+    margin-top: 180px;
+    margin-bottom: 100px;
     `;
 
     const SignupText = styled.p`
@@ -85,7 +85,7 @@
         <PageContainer style={{ backgroundColor: 'white' }}>
         <ContentContainer>
             <LogoContainer>
-            <img src={logo} width='200px' alt="로고" />
+            <img src={TextLogo} width='200px' alt="로고" />
             </LogoContainer>
             <LoginTextFrom
             type="email"
