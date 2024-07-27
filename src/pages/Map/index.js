@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-undef */
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import { PageContainer, ContentContainer } from '../../components/Layout';
@@ -47,6 +48,12 @@ const Text = styled.p`
   font-size: 17px;
 `;
 
+const MapContainer = styled.div`
+  width: 100%;
+  height: 400px;
+  margin-bottom: 20px;
+`;
+
 const handleSaveRoute = () =>{
 
 }
@@ -54,6 +61,85 @@ const handleSaveRoute = () =>{
 function Map() {
   const location = useLocation();
   const { startPoint, endPoint } = location.state || {};
+  const mapRef = useRef(null);
+  const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
+  const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=02925b5b6daafef564e5550b95696753&libraries=services&autoload=false`;
+    script.async = true;
+
+    script.onload = () => {
+      kakao.maps.load(() => {
+        const container = document.getElementById("map");
+        const options = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
+        const map = new kakao.maps.Map(container, options);
+        mapRef.current = map;
+
+        if (startPoint && endPoint) {
+          const bounds = new kakao.maps.LatLngBounds();
+
+          // 출발지 마커와 인포윈도우
+          const startMarker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(startPoint.y, startPoint.x),
+            map: map,
+          });
+          bounds.extend(new kakao.maps.LatLng(startPoint.y, startPoint.x));
+
+          const startInfowindow = new kakao.maps.InfoWindow({
+            content: `<div style="padding:5px;">출발지: ${startPoint.name}</div>`
+          });
+
+          // 도착지 마커와 인포윈도우
+          const endMarker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(endPoint.y, endPoint.x),
+            map: map,
+          });
+          bounds.extend(new kakao.maps.LatLng(endPoint.y, endPoint.x));
+
+          const endInfowindow = new kakao.maps.InfoWindow({
+            content: `<div style="padding:5px;">도착지: ${endPoint.name}</div>`
+          });
+
+
+          // 마커 클릭 이벤트, 다른 마커 클릭하면 인포윈도우 닫힘
+          kakao.maps.event.addListener(startMarker, 'click', function() {
+            if (startInfowindowOpen) {
+              startInfowindow.close();
+            } else {
+              startInfowindow.open(map, startMarker);
+            }
+            setStartInfowindowOpen(!startInfowindowOpen);
+            endInfowindow.close();
+            setEndInfowindowOpen(false);
+          });
+
+          kakao.maps.event.addListener(endMarker, 'click', function() {
+            if (endInfowindowOpen) {
+              endInfowindow.close();
+            } else {
+              endInfowindow.open(map, endMarker);
+            }
+            setEndInfowindowOpen(!endInfowindowOpen);
+            startInfowindow.close();
+            setStartInfowindowOpen(false);
+          });
+
+          map.setBounds(bounds);
+        }
+      });
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [startPoint, endPoint]);
 
   return (
     <PageContainer>
@@ -73,8 +159,8 @@ function Map() {
           </RouteInfoBox>
           <OverlayImage src={Pointer} alt="Overlay" />
         </RouteInfoContainer>
-{/* 여기 서버에서 준값으로 지도 넣기
-민수 컴포넌트 재사용 */}
+        <MapContainer id="map" />
+
         <Button
             backgroundColor={({theme}) => theme.mainColor}
             onClick={handleSaveRoute}
