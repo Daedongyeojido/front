@@ -161,6 +161,10 @@ function Home() {
     }
   };
 
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
   return (
     <PageContainer>
       <Header />
@@ -189,6 +193,7 @@ function Home() {
           selectedPlace={selectedPlace}
           searchResults={searchResults}
           handlePlaceSelect={handlePlaceSelect}
+          onClose={handleModalClose}
         />
       )}
     </PageContainer>

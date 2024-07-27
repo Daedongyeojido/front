@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from "./Button";
 
-const Modal = styled.div`
+const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -20,14 +20,12 @@ const ModalContent = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  width: 90%;
+  width: 80%;
   max-width: 400px;
-  height: 80%;
   max-height: 600px;
   display: flex;
   flex-direction: column;
-  z-index: 1001;
-`;
+  z-index: 1001;`;
 
 const MapContainer = styled.div`
   width: 100%;
@@ -88,10 +86,37 @@ const SearchModal = ({
   handleConfirmSelection,
   selectedPlace,
   searchResults,
-  handlePlaceSelect
-}) => (
-  <Modal>
-    <ModalContent>
+  handlePlaceSelect,
+  onClose
+}) => {
+  const modalRef = useRef();
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    const handleTouchStart = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('touchstart', handleTouchStart);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [onClose]);
+
+  return (
+
+  <ModalOverlay>
+    <ModalContent ref={modalRef}>
       <MapContainer id="map" />
       <InputBox
         placeholder="장소를 검색하세요"
@@ -141,8 +166,9 @@ const SearchModal = ({
           </SearchResult>
         ))}
       </SearchResultContainer>
-    </ModalContent>
-  </Modal>
-);
+      </ModalContent>
+    </ModalOverlay>
+  );
+};
 
 export default SearchModal;
