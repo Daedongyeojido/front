@@ -27,7 +27,7 @@ const IconWrapper = styled.div`
   font-size: 24px;
   color: #333;
   &:hover {
-    color: #789ddd;
+    color: #B9D673;
   }
 `;
 

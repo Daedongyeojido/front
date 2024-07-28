@@ -29,11 +29,11 @@ const ModalContent = styled.div`
   border-radius: 90px;
 `
 const CategoryButton = styled.button`
-  background-color: ${props => props.selected ? '#789DDD' : '#FAF9FD'};
+  background-color: ${props => props.selected ? '#B9D673' : '#FAF9FD'};
   color: ${props => props.selected ? 'white' : 'black'};
   width: 30%;
   height: 40px;
-  border: ${props => props.selected ? 'none' : '1px solid #789DDD'};
+  border: ${props => props.selected ? 'none' : '1px solid #B9D673'};
   font-size: 17px;
   margin: 0px 5px 5px 0px;
   border-radius: 20px;
@@ -52,18 +52,18 @@ const ButtonContainer = styled.div`
 const ResetButton = styled.button`
     width: 35%;
     height: 45px;
-    border: 1px solid #789DDD ;
+    border: 1px solid #B9D673 ;
     border-radius: 30px;
     background-color: #FAF9FD;
     font-size: 17px;
-    color: #789DDD;
+    color: #B9D673;
 `
 const ApplyButton = styled.button`
     width: 35%;
     height: 45px;
-    border: 1px solid #789DDD ;
+    border: 1px solid #B9D673 ;
     border-radius: 30px;
-    background-color: #789DDD;
+    background-color: #B9D673;
     font-size: 17px;
     color: white;
 `
@@ -96,7 +96,7 @@ const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
         <TitleBar
           width='100%'
           height='3px'
-          backgroundColor='#789DDD'>
+          backgroundColor='#B9D673'>
         </TitleBar>
         {Object.keys(categories).map((category) => (
           <div key={category}>

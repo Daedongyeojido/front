@@ -7,6 +7,7 @@ import Signup from '../../pages/Auth/signup/index';
 import Map from '../../pages/Map';
 import Home from '../../pages/Home/main';
 import SplashScreen from '../../pages/splash';
+import MyPathPage from '../../pages/Home/mypage/mypath';
 
 export const routes = [
     { path: '/', element: <SplashScreen /> },
@@ -15,7 +16,9 @@ export const routes = [
     { path: '/mypage', element: <Mypage /> },
     { path: '/signup', element: <Signup /> },
     { path: '/signin', element: <Signin /> },
-    { path: '/map', element: <Map /> }
+    { path: '/map', element: <Map /> },
+    { path: '/mypath', element: <MyPathPage /> }
+
 ];
 
 const RoutesSetting = () => (

@@ -49,7 +49,7 @@ const InputBox = styled.input`
   outline: none;
   &:focus {
     outline: none;
-    border-color: #789ddd;
+    border-color: #B9D673;
   }
 `;
 
@@ -141,7 +141,7 @@ const SearchModal = ({
             width="48%"
             height="45px"
             fontSize="15px"
-            backgroundColor={selectedPlace ? "#789DDD" : "#EEEEEE"}
+            backgroundColor={selectedPlace ? "#B9D673" : "#EEEEEE"}
             color="white"
             marginTop="5px"
             marginBottom="5px"

@@ -47,7 +47,7 @@ const InputBox = styled.input`
   border: none;
   outline: none;
   &:focus {
-    border-color: #789ddd;
+    border-color: #B9D673;
   }
 `;
 
@@ -104,7 +104,7 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
         width="60%"
         height="49px"
         borderradius="30px"
-        backgroundColor={startPoint.name && endPoint.name ? "#789DDD" : "#CCCCCC"}
+        backgroundColor={startPoint.name && endPoint.name ? "#B9D673" : "#CCCCCC"}
         onClick={handleGo}
         disabled={!startPoint.name || !endPoint.name}
       >
