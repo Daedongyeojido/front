@@ -28,7 +28,6 @@ const ModalContent = styled.div`
   z-index: 1001;
   border-radius: 90px;
 `
-
 const CategoryButton = styled.button`
   background-color: ${props => props.selected ? '#789DDD' : '#FAF9FD'};
   color: ${props => props.selected ? 'white' : 'black'};
@@ -39,14 +38,40 @@ const CategoryButton = styled.button`
   margin: 0px 5px 5px 0px;
   border-radius: 20px;
   &:hover{
-    background-color: rgba(217, 217, 217, 0.37);
+    background-color: ${props => props.selected ? 'none' : 'rgba(217, 217, 217, 0.37)'};
   }
+`
+const ButtonContainer = styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 20px;
+`
+const ResetButton = styled.button`
+    width: 35%;
+    height: 45px;
+    border: 1px solid #789DDD ;
+    border-radius: 30px;
+    background-color: #FAF9FD;
+    font-size: 17px;
+    color: #789DDD;
+`
+const ApplyButton = styled.button`
+    width: 35%;
+    height: 45px;
+    border: 1px solid #789DDD ;
+    border-radius: 30px;
+    background-color: #789DDD;
+    font-size: 17px;
+    color: white;
 `
 const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
   const categories = {
     식사: ['샐러드', '포케'],
     문화: ['미술관', '전시', '음악', '공방'],
-    휴식: ['공원','둘레길','사찰','도서관']
+    휴식: ['공원', '둘레길', '사찰', '도서관']
   };
 
   const handleSeclectedPlace = (category, item) => {
@@ -88,6 +113,10 @@ const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
             ))}
           </div>
         ))}
+        <ButtonContainer>
+          <ResetButton>초기화</ResetButton>
+          <ApplyButton> 적용</ApplyButton>
+        </ButtonContainer>
 
       </ModalContent>
     </Modal>
