@@ -11,6 +11,8 @@ import SearchModal from "../../components/SearchModal";
 import Rank from '../../components/Rank';
 import FilterModal from "../../components/FilterModal";
 
+// import axios from 'axios';
+
 const Header = styled.div`
   width: 100%;
   height: 200px;
@@ -152,7 +154,18 @@ function Home() {
   };
 
   const handleGo = () => {
-    navigate("/map", { state: { startPoint, endPoint } });
+    if (startPoint.name && endPoint.name) {
+      navigate('/map', { 
+        state: { 
+          startPoint,
+          endPoint
+        } 
+      });
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
   };
 
   const handleFilterModal = () => {
@@ -189,6 +202,7 @@ function Home() {
           selectedPlace={selectedPlace}
           searchResults={searchResults}
           handlePlaceSelect={handlePlaceSelect}
+          onClose={handleModalClose}
         />
       )}
       {showFilterModal&& (
