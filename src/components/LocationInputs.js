@@ -50,7 +50,8 @@ const InputBox = styled.input`
     border-color: #789ddd;
   }
 `;
-const LocationInputs = ({ startPoint, endPoint, handleInputClick }) => {
+
+const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterModal }) => {
   const navigate = useNavigate();
 
   const handleGo = () => {
@@ -84,9 +85,20 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick }) => {
           readOnly
         />
       </InputContainer>
-      <InputContainer>
-        <InputBox placeholder="추천받고 싶은 않은 장소가 있어요!" />
-      </InputContainer>
+
+      <Button
+        fontSize='15px'
+        fontWeight='300'
+        height= '50px'
+        width= '85%'
+        backgroundColor='#eeeeee'
+        customStyle='box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25)' //customstyle로 쓰라고 warning뜸
+        color='black'
+        onClick={handleFilterModal}
+        >
+          추천받고 싶은 않은 장소가 있어요!
+      </Button>
+
       <Button
         fontSize="20px"
         width="60%"

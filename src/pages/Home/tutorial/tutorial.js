@@ -20,7 +20,11 @@ function Tutorial() {
             <AppBar title="튜토리얼" />
             <ContentContainer>
                 <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '60px' }}>
-                    <TitleBar></TitleBar>
+                    <TitleBar 
+                        width='2.5px;'
+                        height= '42px;'
+                        background-color= '#575757;' 
+                        margin= '3px 15px 0px 0px;'/>
                     <div style={{ fontWeight: 'bold', fontSize: '17px' }}>그린루트, 일상 속 <br /> 웰니스 여정을 떠나보세요!</div>
                 </div>
                 <TutorialList></TutorialList>
