@@ -9,6 +9,7 @@ import TopContainer from "../../components/TopContainer";
 import LocationInputs from "../../components/LocationInputs";
 import SearchModal from "../../components/SearchModal";
 import Rank from '../../components/Rank';
+import FilterModal from "../../components/FilterModal";
 
 const Header = styled.div`
   width: 100%;
@@ -42,11 +43,13 @@ function Home() {
   const [endPoint, setEndPoint] = useState({ name: "", x: 0, y: 0 });
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [isStartSearch, setIsStartSearch] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isSearched, setIsSearched] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({}); 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const navigate = useNavigate();
@@ -152,6 +155,10 @@ function Home() {
     navigate("/map", { state: { startPoint, endPoint } });
   };
 
+  const handleFilterModal = () => {
+    setShowFilterModal(!showFilterModal);
+  };
+
   return (
     <PageContainer>
       <Header />
@@ -163,7 +170,9 @@ function Home() {
           endPoint={endPoint}
           handleInputClick={handleInputClick}
           handleGo={handleGo}
+          handleFilterModal={handleFilterModal}
         />
+
         <RankContainer>
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>
@@ -181,6 +190,11 @@ function Home() {
           searchResults={searchResults}
           handlePlaceSelect={handlePlaceSelect}
         />
+      )}
+      {showFilterModal&& (
+        <FilterModal 
+        selectedFilters={selectedFilters} 
+        setSelectedFilters={setSelectedFilters} />
       )}
     </PageContainer>
   );
