@@ -1,45 +1,27 @@
-import axios from "axios";
+import instance from "./instance";
 
-
-//회원가입
-export const checkNicknameDuplicate = async (nickname) => {
-  // eslint-disable-next-line no-useless-catch
-    try {
-        const response = await axios.post('/check-nickname', { nickname });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const checkEmailDuplicate = async (email) => {
-  // eslint-disable-next-line no-useless-catch
-    try {
-        const response = await axios.post('/check-email', { email });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export const signup = async (userData) => {
-  // eslint-disable-next-line no-useless-catch
-    try {
-        const response = await axios.post('/signup', userData);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-
-//로그인
+// 로그인
 export const login = async (email, password) => {
-    // eslint-disable-next-line no-useless-catch
     try {
-    const response = await axios.post('/login', { email, password });
-    return response.data;
+      const response = await instance.post('/user/login', { email, password });
+      return response.data;
     } catch (error) {
-    throw error;
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+      throw error;
     }
-};
+  };
+  
+  // 회원가입
+  export const signup = async (userData) => {
+    try {
+      const response = await instance.post('/user/join', userData);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        throw error.response.data;
+      }
+      throw error;
+    }
+  };
