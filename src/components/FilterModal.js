@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
 import TitleBar from './TitleBar';
-import { object } from 'prop-types';
 import Button from './Button';
 
 const Modal = styled.div`
@@ -27,6 +26,7 @@ const ModalContent = styled.div`
   flex-direction: column;
   z-index: 1001;
   border-radius: 90px;
+  scroll-behavior: auto;
 `
 const CategoryButton = styled.button`
   background-color: ${props => props.selected ? '#B9D673' : '#FAF9FD'};
@@ -42,32 +42,15 @@ const CategoryButton = styled.button`
   }
 `
 const ButtonContainer = styled.div`
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
-    margin-top: 20px;
+    justify-content:space-around;
+    margin-top: 10px;
+
 `
-const ResetButton = styled.button`
-    width: 35%;
-    height: 45px;
-    border: 1px solid #B9D673 ;
-    border-radius: 30px;
-    background-color: #FAF9FD;
-    font-size: 17px;
-    color: #B9D673;
-`
-const ApplyButton = styled.button`
-    width: 35%;
-    height: 45px;
-    border: 1px solid #B9D673 ;
-    border-radius: 30px;
-    background-color: #B9D673;
-    font-size: 17px;
-    color: white;
-`
-const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
+const FilterModal = ({ selectedFilters, setSelectedFilters, onClose }) => {
   const categories = {
     식사: ['샐러드', '포케'],
     문화: ['미술관', '전시', '음악', '공방'],
@@ -88,6 +71,13 @@ const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
     }
     setSelectedFilters(newFilters);
   };
+
+  const AvoidPlaces = (places) => {
+    if(places) {
+      
+    }
+
+  }
 
   return (
     <Modal>
@@ -114,10 +104,32 @@ const FilterModal = ({ selectedFilters, setSelectedFilters }) => {
           </div>
         ))}
         <ButtonContainer>
-          <ResetButton>초기화</ResetButton>
-          <ApplyButton> 적용</ApplyButton>
-        </ButtonContainer>
+          <Button
+            width= '45%'
+            height= '45px'
+            customStyle= 'border: 1px solid #B9D673' 
+            borderRadius='30px'
+            backgroundColor= 'transparent'
+            fontSize="17px"
+            color=' #B9D673'
+            onClick='' //초기화 
+              >
+            초기화 </Button>
+            <Button
+              width = '45%'
+              height= '45px'
+              border= '1px solid #B9D673'
+              borderRadius= '30px'
+              backgroundColor='#B9D673'
+              fontSize= '17px'
+              color= 'white'
+              onClick = {console.log('clicked!')}>적용</Button> 
+              {/* 여기 키워드 넘겨주는 로직 작업 및 이름 수정  */}
+              AvoidPlaces([제외된 장소들 ])
+              이거 submit 버튼? 으로 해야 할 듯 
+              onSubmit=''
 
+        </ButtonContainer>
       </ModalContent>
     </Modal>
   );

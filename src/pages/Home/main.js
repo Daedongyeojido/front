@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import FootPrint from "../../Image/FootPrint.png";
 import Hand from '../../Image/Hand.png';
 import { useNavigate } from "react-router-dom";
 import { PageContainer, ContentContainer } from "../../components/Layout";
@@ -22,14 +21,18 @@ const Header = styled.div`
   background-repeat: no-repeat;
 `;
 
-const FootPrintImg = styled.img`
+const FootPrintImg = styled.div`
+  width: 100%;
+  height: 300px;
+  background-image: url("/Images/FootPrint.png");
+  background-size: contain;
+  background-position-x: right;
+  background-repeat: no-repeat;
   position: absolute;
-  z-index: 1;
-  top: 300px; /* 브라우저 크기에 관계없이 고정된 위치 */
-  left: 49%; /* 부모 요소의 중앙으로 정렬 */
-  transform: translateX(50%); /* 이미지의 중앙으로 이동 */
-  width: 169px;
+  top: 350px;
+  z-index: 0;
 `;
+
 const HandImg = styled.img`
     width: 34px;
     height: 34px;
@@ -175,8 +178,8 @@ function Home() {
   return (
     <PageContainer>
       <Header />
+      <FootPrintImg />
       <ContentContainer>
-        <FootPrintImg src={FootPrint}/>
         <TopContainer />
         <LocationInputs
           startPoint={startPoint}
@@ -185,7 +188,6 @@ function Home() {
           handleGo={handleGo}
           handleFilterModal={handleFilterModal}
         />
-
         <RankContainer>
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>
@@ -208,8 +210,11 @@ function Home() {
       {showFilterModal&& (
         <FilterModal 
         selectedFilters={selectedFilters} 
-        setSelectedFilters={setSelectedFilters} />
-      )}
+        setSelectedFilters={setSelectedFilters} 
+        onClose={() => {
+          setShowFilterModal(false);
+        }}
+        />)}
     </PageContainer>
   );
 }
