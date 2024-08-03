@@ -54,7 +54,7 @@ function Home() {
   const [isStartSearch, setIsStartSearch] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isSearched, setIsSearched] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({}); 
+  const [avoidCategories, setAvoidCategories] = useState({}); 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const navigate = useNavigate();
@@ -209,8 +209,8 @@ function Home() {
       )}
       {showFilterModal&& (
         <FilterModal 
-        selectedFilters={selectedFilters} 
-        setSelectedFilters={setSelectedFilters} 
+        avoidCategories={avoidCategories} 
+        setAvoidCategories={setAvoidCategories} 
         onClose={() => {
           setShowFilterModal(false);
         }}
