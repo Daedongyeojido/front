@@ -111,6 +111,7 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
         GO
       </Button>
     </Container>
+
   );
 };
 

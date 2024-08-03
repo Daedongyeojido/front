@@ -9,6 +9,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
 `;
 
 const LogoText = styled.div`

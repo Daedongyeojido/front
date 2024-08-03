@@ -3,21 +3,28 @@ import { PageContainer, ContentContainer } from '../../../components/Layout'
 import AppBar from '../../../components/AppBar';
 import TitleBar from '../../../components/TitleBar';
 import TutorialList from '../../../components/TutorialList';
-import GreenHeartImg from '../../../Image/greenheart.png';
 import styled from 'styled-components';
+import Liked from '../../../Image/LikedButton.png';
 
-const GreenHeartIcon = styled.img`
-    position: absolute;
-    z-index: 1;
-    left: 58%;
-    top: 472px;
-    width: 25px;
-    height: 25px;
+const LikedButtonImg = styled.div`
+  width: 100%;
+  height: 25px;
+  background-image: url('/Images/LikedButton.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 427px;
+  left: 2%;
+  z-index: 0;
 `
+
+
 function Tutorial() {
     return (
         <PageContainer>
             <AppBar title="튜토리얼" />
+            <LikedButtonImg />
             <ContentContainer>
                 <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '60px' }}>
                     <TitleBar 
@@ -28,7 +35,6 @@ function Tutorial() {
                     <div style={{ fontWeight: 'bold', fontSize: '17px' }}>그린루트, 일상 속 <br /> 웰니스 여정을 떠나보세요!</div>
                 </div>
                 <TutorialList></TutorialList>
-                <GreenHeartIcon src={GreenHeartImg}></GreenHeartIcon>
             </ContentContainer>
         </PageContainer>
     );
