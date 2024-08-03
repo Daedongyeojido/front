@@ -42,78 +42,63 @@
     const [user, setUser] = useRecoilState(userState);
     const [errors, setErrors] = useState({});
 
+    const handleChange = (name, value) => {
+        setUser({ ...user, [name]: value });
+      };
+  const handleLogin = async () => {
+    try {
+      const result = await login(user.email, user.password);
+      console.log('로그인 성공:', result);
+      setUser({ ...user, isLoggedIn: true });
+      // 토큰 저장
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('user_id', result.user_id);
+      // 로그인 성공 후 리다이렉트
+      navigate('/main');
+    } catch (error) {
+      if (error.email) {
+        setErrors({ email: error.email });
+      } else if (error.password) {
+        setErrors({ password: error.password });
+      } else {
+        setErrors({ general: '로그인에 실패했습니다. 다시 시도해주세요.' });
+      }
+    }
+  };
 
-    const validateForm = () => {
-        let isValid = true;
-        let newErrors = {};
-
-        if (!user.email) {
-        newErrors.email = '이메일을 입력해주세요.';
-        isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(user.email)) {
-        newErrors.email = '올바른 이메일 형식이 아닙니다.';
-        isValid = false;
-        }
-
-        if (!user.password) {
-        newErrors.password = '비밀번호를 입력해주세요.';
-        isValid = false;
-        }
-
-        setErrors(newErrors);
-        return isValid;
-    };
-
-    const handleLogin = async () => {
-
-        if (validateForm()) {
-        try {
-            const result = await login(user.email, user.password);
-            // 로그인 성공 처리
-            console.log('로그인 성공:', result);
-            setUser({ ...user, isLoggedIn: true });
-            // 여기서 로그인 성공 후의 로직을 추가할 수 있습니다.
-            // 예: 토큰 저장, 리다이렉트 등
-        } catch (error) {
-            // 에러 처리
-            setErrors({ ...errors, general: '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.' });
-        }
-        }
-    };
-
-    return (
-        <PageContainer style={{ backgroundColor: 'white' }}>
-        <ContentContainer>
-            <LogoContainer>
-            <img src={TextLogo} width='200px' alt="로고" />
-            </LogoContainer>
-            <LoginTextFrom
-            type="email"
-            name="email"
-            placeholder="이메일을 입력해주세요."
-            marginBottom="20px"
-            value={user.email}
-            />
+  return (
+    <PageContainer style={{ backgroundColor: 'white' }}>
+      <ContentContainer>
+        <LogoContainer>
+          <img src={TextLogo} width='200px' alt="로고" />
+        </LogoContainer>
+        <LoginTextFrom
+  type="email"
+  name="email"
+  placeholder="이메일을 입력해주세요."
+  marginBottom="20px"
+  value={user.email}
+  onChange={(value) => handleChange('email', value)}
+/>
         {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+        <LoginTextFrom
+  type="password"
+  name="password"
+  placeholder="비밀번호를 입력해주세요."
+  value={user.password}
+  onChange={(value) => handleChange('password', value)}
+/>
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+        <Button
+          onClick={handleLogin}
+          marginTop="50px">로그인</Button>
+        {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
+        <SignupText>
+          그린루트가 처음이라면 <SignupLink onClick={() => navigate('/signup')}>회원가입</SignupLink>
+        </SignupText>
+      </ContentContainer>
+    </PageContainer>
+  );
+};
 
-            <LoginTextFrom
-            type="password"
-            name="password"
-            placeholder="비밀번호를 입력해주세요."
-            value={user.password}
-            />
-        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-
-            <Button 
-            onClick={handleLogin}
-            marginTop="50px">로그인</Button>
-            {errors.general && <p>{errors.general}</p>}
-            <SignupText>
-                그린루트가 처음이라면 <SignupLink onClick={() => navigate('/signup')}>회원가입</SignupLink>
-            </SignupText>
-        </ContentContainer>
-        </PageContainer>
-    );
-    };
-
-    export default Signin;
+export default Signin;
