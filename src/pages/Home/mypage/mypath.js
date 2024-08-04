@@ -1,8 +1,10 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 import Timetags from './timetags';
+import Modal from './modal'; 
+import PathPage from './paths'; 
+import '../../../css/Mypath.css'; 
 
 const getFormattedDate = (daysAgo) => {
   const date = new Date();
@@ -17,7 +19,7 @@ function MyPathPage() {
   const todayDate = getFormattedDate(0);
   const yesterdayDate = getFormattedDate(1);
   const dayBeforeYesterdayDate = getFormattedDate(2);
-  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const data = [
     {
@@ -49,23 +51,27 @@ function MyPathPage() {
   ];
 
   const handleDateClick = () => {
-    navigate('/paths');
+    setIsModalOpen(true); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
   };
 
   return (
     <PageContainer>
       <AppBar title='마이페이지' />
-      <div className="tagsContainer">
-        <div className="tagsRow">
+      <div className="mypathTagsContainer">
+        <div className="mypathTagsRow">
           {tags.slice(0, 3).map((tag, index) => (
-            <span key={index} className="tag" style={{ backgroundColor: tag.color }}>
+            <span key={index} className="mypathTag" style={{ backgroundColor: tag.color }}>
               {tag.text}
             </span>
           ))}
         </div>
-        <div className="tagsRow large">
+        <div className="mypathTagsRow large">
           {tags.slice(3).map((tag, index) => (
-            <span key={index} className="tag" style={{ backgroundColor: tag.color }}>
+            <span key={index} className="mypathTag" style={{ backgroundColor: tag.color }}>
               {tag.text}
             </span>
           ))}
@@ -81,6 +87,9 @@ function MyPathPage() {
           </div>
         ))}
       </ContentContainer>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <PathPage /> 
+      </Modal>
     </PageContainer>
   );
 }
