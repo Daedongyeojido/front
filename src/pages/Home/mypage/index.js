@@ -32,7 +32,6 @@ function Mypage() {
         <hr className='divider2' />
         <div className='MyOut' onClick={handleLogoutClick}>로그아웃</div>
         <hr className='divider3' />
-        <img src='Images/cloud.png' alt='cloud' className='clouds'></img>
         </ContentContainer>
     </PageContainer>
   );

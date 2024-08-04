@@ -1,0 +1,121 @@
+/* 해시태그 컨테이너 */
+.pathsTagContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 10px; /* 해시태그 간 간격 조정 */
+  padding: 10px 0 5px; /* 상단 패딩을 10px로 조정 */
+  margin-top: 20px; /* 상단 마진을 줄여서 더 위로 올림 */
+  background-color: #f4f4f4;
+}
+
+/* 해시태그 첫 번째 줄 */
+.pathsTagRow {
+  display: flex;
+  flex-wrap: nowrap; /* 줄 바꿈 방지 */
+  overflow-x: auto; /* 가로 스크롤 활성화 */
+  gap: 32px; /* 버튼 간 간격 조정 */
+  width: 100%; /* 컨테이너 폭을 100%로 설정 */
+}
+
+/* 해시태그 두 번째 줄 */
+.tagsLarge {
+  display: flex;
+  flex-wrap: nowrap; /* 줄 바꿈 방지 */
+  overflow-x: auto; /* 가로 스크롤 활성화 */
+  gap: 25px; /* 버튼 간 간격 조정 */
+  margin-top: 10px; /* 두 줄 사이 간격 추가 */
+  width: 100%; 
+}
+
+/* 해시태그 버튼 */
+.pathsTag {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+}
+
+/* 큰 해시태그 버튼 (두 번째 줄에 적용) */
+.tagsLarge .pathsTag {
+  padding: 5px 20px; 
+  font-size: 16px; 
+}
+
+/* 경로 */
+.route {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.route .start, .route .viapoint, .route .destination {
+  background-color: #FFFAF3;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px 0;
+  width: 80%;
+  height: 70px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.onStart, .via1, .via2, .via3, .offStart {
+  font-weight: bold;
+  position: absolute;
+  left: 10px;
+  top: 10%;
+  z-index: 1;
+}
+
+.route .start p, .route .viapoint p, .route .destination p {
+  margin: 0;
+}
+
+/* 별 */
+.starIcon1, .starIcon2, .starIcon3 {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%); /* 수직 중앙 정렬 */
+  transition: filter 0.3s, transform 0.3s;
+  animation: bounce 1s infinite; /* 애니메이션 적용 */
+}
+
+/* 클릭된 별 아이콘 */
+.starIcon1.clicked, .starIcon2.clicked, .starIcon3.clicked {
+  filter: brightness(0) saturate(100%) invert(74%) sepia(20%) saturate(550%) hue-rotate(56deg) brightness(98%) contrast(89%);
+  transform: translateY(-7px); /* 클릭 시 약간 이동 */
+  /* 클릭 상태에서 애니메이션 중지 */
+  animation: none;
+}
+
+/* 애니메이션 정의 */
+@keyframes bounce {
+  0%, 100% {
+      transform: translateY(0); /* 원래 위치 */
+  }
+  50% {
+      transform: translateY(-10px); /* 점프 높이 */
+  }
+}
+
+/* 화살표 */
+.arrowIcon {
+  width: 40px;
+  height: 40px;
+  margin-left: 1em;
+  vertical-align: middle;
+}
