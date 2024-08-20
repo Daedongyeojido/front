@@ -22,11 +22,13 @@ const LocationContainer = styled.div`
 `
 const VenueInfo = styled.div`
     font-weight: bold;
-    margin-bottom: 3px;
+    font-size: 13px;
+
 `
 
 const AddressInfo = styled.div`
     font-weight: 300;
+    font-size: 13px;
 `
 function Rank() {
     const [rank, setRank] = useState([]);
@@ -58,7 +60,6 @@ function Rank() {
                         <LocationContainer>
                             <VenueInfo>장소: {place.place_name}</VenueInfo>
                             <AddressInfo>주소:{place.place_address}</AddressInfo>
-                            <AddressInfo>좋아요:{place.place_like}</AddressInfo>
                         </LocationContainer>
                     </DisplayRank>
                 ))

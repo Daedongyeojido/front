@@ -14,9 +14,11 @@ const InputContainer = styled.div`
   margin-top: ${props => props.marginTop || '0'};
   margin-bottom: ${props => props.marginBottom || '0'};
   ${props => props.customStyle}
+
 `;
 
 const StyledInput = styled.input`
+  font-family: 'IBM Plex Sans KR', sans-serif;
   width: 100%;
   border: none;
   outline: none;
@@ -52,6 +54,7 @@ const LoginTextFrom = ({
   suffixFontSize,
   suffixColor,
   customStyle,
+  fontFamily,
   ...props
 }) => {
   const [inputValue, setInputValue] = useState(value || '');
