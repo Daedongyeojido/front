@@ -208,7 +208,7 @@ function Home() {
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>
         </RankContainer>
-        {/* <Rank /> */}
+        <Rank /> 
       </ContentContainer>
       {showModal && (
         <SearchModal

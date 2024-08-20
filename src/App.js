@@ -5,6 +5,8 @@ import { ThemeProvider } from 'styled-components';
 import styled from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './utils/theme/theme';
+import { Helmet } from 'react-helmet';
+
 
 const AppContainer = styled.div`
   max-width: 480px;
@@ -18,6 +20,12 @@ function App() {
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
+      <Helmet>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&display=swap"
+          />
+        </Helmet>
         <GlobalStyle />
         <AppContainer>
           <Suspense fallback={<div />}>

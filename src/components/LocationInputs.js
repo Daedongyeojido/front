@@ -40,6 +40,7 @@ const Icon = styled.img`
 `;
 
 const InputBox = styled.input`
+  font-family: 'IBM Plex Sans KR', sans-serif;
   width: 100%;
   height: 100%;
   font-size: 15px;
