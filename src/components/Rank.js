@@ -1,5 +1,7 @@
 // import React, { useState, useEffect }  from 'react'
 import styled from "styled-components";
+import { locationRank } from "../apis/locationRank";
+import { useEffect, useState } from "react";
 
 const DisplayRank = styled.div`
     display: flex;
@@ -27,35 +29,45 @@ const AddressInfo = styled.div`
     font-weight: 300;
 `
 function Rank() {
+    const [rank, setRank] = useState([]);
 
-    // const [placeRank, setPlaceRank] = useState([]);
+    useEffect(() => {
+        const PlaceRank = async () => {
+            try {
+                const response = await locationRank();
+                console.log(response);
+                if (response && response.top_recommended_places) {
+                    setRank(response.top_recommended_places);
+                } else {
+                    setRank([]);
+                }
+            } catch (error) {
+                console.log('');
+                
+            }
+        };
+        PlaceRank();
+    }, []);
 
-    // useEffect(() => {
-    //    그냥 예시.... 지워도댐
-    //     fetch('https://api.example.com/recommendations') //나중에 변경
-    //         .then(response => response.json())
-    //         .then(data => setRecommendPlace(data))
-    //         .catch(error => console.error('Error fetching data:', error));
-    // }, []);
-
-    const recommendPlace = [
-        { rank: 1, location: '여기 장소가 들어가요여기 장소가 들어가요여기', address: "여기 주소가 들어가요 여기 주소 주소 여기 주소가 들어감" },
-        { rank: 2, location: '여기 장소가 들어가요여기 장소가 들어가요여기', address: "여기 주소가 들어가요 여기 주소 주소 여기 주소가 들어감" },
-        { rank: 3, location: '여기 장소가 들어가요여기 장소가 들어가요여기', address: "여기 주소가 들어가요 여기 주소 주소 여기 주소가 들어감" },
-    ]
     return (
-        recommendPlace.map((item) => {
-            return (
-                <DisplayRank>
-                    <NumberContainer>
-                        {item.rank}
-                    </NumberContainer>
-                    <LocationContainer>
-                        <VenueInfo>장소: {item.location}</VenueInfo>
-                        <AddressInfo>주소: {item.address}</AddressInfo>
-                    </LocationContainer>
-                </DisplayRank>
-            )
-        }))
+        <>
+            {rank.length > 0 ? (
+                rank.map((place, index) => (
+                    <DisplayRank key={index}>
+                        <NumberContainer>{index + 1}</NumberContainer>
+                        <LocationContainer>
+                            <VenueInfo>장소: {place.place_name}</VenueInfo>
+                            <AddressInfo>주소:{place.place_address}</AddressInfo>
+                            <AddressInfo>좋아요:{place.place_like}</AddressInfo>
+                        </LocationContainer>
+                    </DisplayRank>
+                ))
+            ) : (
+                <p>추천된 장소가 없습니다.</p>
+            )}
+
+        </>
+    )
+
 }
 export default Rank;

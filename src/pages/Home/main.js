@@ -9,6 +9,7 @@ import LocationInputs from "../../components/LocationInputs";
 import SearchModal from "../../components/SearchModal";
 import Rank from '../../components/Rank';
 import FilterModal from "../../components/FilterModal";
+import { locationRank } from "../../apis/locationRank";
 
 // import axios from 'axios';
 
@@ -55,6 +56,7 @@ function Home() {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isSearched, setIsSearched] = useState(false);
   const [avoidCategories, setAvoidCategories] = useState({}); 
+  const [rankData, setRankData] = useState([]);
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const navigate = useNavigate();
@@ -76,6 +78,20 @@ function Home() {
       document.head.removeChild(script);
     };
   }, []);
+
+  // useEffect (()=> {
+
+  //   const fetchRankData = async()=> {
+  //     try{
+  //       const data = await locationRank();
+  //       setRankData(data.top_recommended_places);
+  //     } catch (error) {
+  //       console.error('Failed to fetch rank data:', error);
+  //     }
+  //   };
+
+  //   fetchRankData();
+  // },[]);
 
   const initializeMap = () => {
     if (!kakaoLoaded) return;
@@ -192,7 +208,7 @@ function Home() {
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>
         </RankContainer>
-        <Rank></Rank>
+        {/* <Rank /> */}
       </ContentContainer>
       {showModal && (
         <SearchModal

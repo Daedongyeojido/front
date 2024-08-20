@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 import '../../../css/Mypage.css';
+import MyRoutesApi from '../../../apis/myRoutesApi';
 
 function Mypage() {
 
