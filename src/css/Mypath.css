@@ -7,30 +7,30 @@
     padding: 20px 0 5px; /* 상단 패딩을 10px로 조정하여 더 위로 올림 */
     margin-top: 10px; /* 상단 마진을 줄여서 더 위로 올림 */
     background-color: #f4f4f4;
-}
+  }
   
-.mypathTagsRow {
+  .mypathTagsRow {
     display: flex;
     justify-content: space-between;
     width: 65%;
     max-width: 600px;
-}
+  }
     
-.mypathTag {
+  .mypathTag {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 12px;
     color: #fff;
     font-size: 14px;
     font-weight: bold;
-}
+  }
   
-.mypathTagsRow.large .mypathTag {
+  .mypathTagsRow.large .mypathTag {
     padding: 5px 20px; /* 아래 2개의 해시태그를 더 길게 설정 */
-}
+  }
   
   /* 전체 컨테이너 */
-.mypathsDateRecordContainer {
+  .mypathsDateRecordContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -40,9 +40,9 @@
     margin-bottom: 15px; /* 각 날짜 컨테이너 아래 회색 선을 위한 여백 */
     border-bottom: 15px solid #ddd; /* 회색 선 */
     padding-bottom: 10px; /* 선과 내용물 간의 간격을 줄임 */
-}
+  }
   
-.mypathRecordsContainer {
+  .mypathRecordsContainer {
     background-color: #fff;
     border: 1px solid #ddd;
     margin-bottom: 10px; /* 하단 마진을 줄여서 날짜와 레코드 간의 공간 확보 */
@@ -51,72 +51,72 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     margin-top: 5px; /* 상단 마진을 줄여서 날짜와 레코드 간의 공간 확보 */
-}
+  }
   
-.mypathRecord {
+  .mypathRecord {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 10px;
-}
+  }
   
-.mypathRecord.first {
+  .mypathRecord.first {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-}
+  }
   
-.mypathRecord.middle {
+  .mypathRecord.middle {
     border-radius: 0;
-}
+  }
   
-.mypathRecord.last {
+  .mypathRecord.last {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-}
+  }
   
   /* 전체 레코드 정보 */
-.timetagsInfo {
+  .timetagsInfo {
     display: flex;
     flex-direction: column; /* 세로 정렬 */
     align-items: flex-start; /* 왼쪽 정렬 */
     gap: 10px; /* 항목 간의 간격 */
-}
+  }
   
   /* 점 Label */
-.timetagsDotsLabel {
+  .timetagsDotsLabel {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: -5px; /* 레이블과 점 사이의 간격을 줄임 */
-}
+  }
   
-/* 점 */
-.timetagsDots {
+  /* 점 */
+  .timetagsDots {
     display: flex;
     gap: 10px; /* 색상 점 사이 간격 */
     margin-bottom: 5px; /* 색상 점과 세부 정보 사이의 간격을 줄임 */
-}
+  }
   
-.timetagsDot {
+  .timetagsDot {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-}
+  }
   
-/* 디테일 */
- .timetagsDetails {
+  /* 디테일 */
+  .timetagsDetails {
     display: flex;
     flex-direction: column; /* 세로 정렬 */
     gap: 5px; /* 세부 사항 사이 간격 */
-}
+  }
   
-.timetagsDetailItem {
+  .timetagsDetailItem {
     font-size: 16px;
-}
+  }
   
-.timetagsDate {
+  .timetagsDate {
     font-size: 16px;
     font-weight: bold; /* 날짜를 굵게 표시 */
     margin-bottom: 5px; /* 날짜와 다른 요소 간의 간격을 줄임 */
     margin-left: 10px;
     position: relative;
-}
+  }

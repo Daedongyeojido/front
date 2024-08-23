@@ -16,30 +16,16 @@ const getFormattedDate = (daysAgo) => {
 };
 
 function MyPathPage() {
-  const todayDate = getFormattedDate(0);
-  const yesterdayDate = getFormattedDate(1);
-  const dayBeforeYesterdayDate = getFormattedDate(2);
   const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const data = [
     {
-      date: todayDate,
+      date: getFormattedDate(0),
       records: [
         { dots: ['#F9B8BC', '#7079BC', '#59AF7E'], start: '', end: '' }
       ]
     },
-    {
-      date: yesterdayDate,
-      records: [
-        { dots: ['#F9B8BC', '#7079BC', '#59AF7E'], start: '', end: '' }
-      ]
-    },
-    {
-      date: dayBeforeYesterdayDate,
-      records: [
-        { dots: ['#F9B8BC', '#7079BC', '#59AF7E'], start: '', end: '' }
-      ]
-    }
   ];
 
   const tags = [
@@ -58,20 +44,40 @@ function MyPathPage() {
     setIsModalOpen(false); // 모달 닫기
   };
 
+  const handleTagClick = (tag) => {
+    setSelectedTags(prevTags => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter(t => t !== tag);
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+
   return (
     <PageContainer>
       <AppBar title='마이페이지' />
       <div className="mypathTagsContainer">
         <div className="mypathTagsRow">
           {tags.slice(0, 3).map((tag, index) => (
-            <span key={index} className="mypathTag" style={{ backgroundColor: tag.color }}>
+            <span
+              key={index}
+              className={`mypathTag ${selectedTags.includes(tag.text) ? 'selected' : ''}`}
+              style={{ backgroundColor: tag.color }}
+              onClick={() => handleTagClick(tag.text)}
+            >
               {tag.text}
             </span>
           ))}
         </div>
         <div className="mypathTagsRow large">
           {tags.slice(3).map((tag, index) => (
-            <span key={index} className="mypathTag" style={{ backgroundColor: tag.color }}>
+            <span
+              key={index}
+              className={`mypathTag ${selectedTags.includes(tag.text) ? 'selected' : ''}`}
+              style={{ backgroundColor: tag.color }}
+              onClick={() => handleTagClick(tag.text)}
+            >
               {tag.text}
             </span>
           ))}

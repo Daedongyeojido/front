@@ -1,9 +1,171 @@
 import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
-import '../../../css/Paths.css';
 import arrowImage from '../../../pages/Home/mypage/Arrow.png';
 import heartImage from '../../../pages/Home/mypage/Heart.png';
+
+// Keyframes for bounce animation
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+
+// Styled components
+const PathsTagContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px;
+  margin-top: -30px; /* Adjust this value to move the container up */
+  background-color: #f4f4f4;
+  position: relative;
+  z-index: 1;
+`;
+
+const PathsTagRow = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 32px;
+  width: 100%;
+`;
+
+const TagsLarge = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  margin-top: 10px;
+  width: 100%;
+`;
+
+const PathsTag = styled.button`
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  white-space: nowrap;
+  background-color: ${(props) => props.bgColor};
+`;
+
+const Route = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const RouteButton = styled.button`
+  background-color: #FFFAF3;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px 0;
+  width: 80%;
+  height: 70px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+`;
+
+const SmallCircleButton = styled.button`
+  width: 25px; 
+  height: 25px;
+  border-radius: 50%;
+  background-color: #575757;
+  border: none;
+  position: absolute;
+  top: 5px; /* Adjust as needed */
+  left: 15px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+const Start = styled(RouteButton)``;
+const ViaPoint = styled(RouteButton)``;
+const Destination = styled(RouteButton)``;
+
+const OnStart = styled.p`
+  font-weight: bolder;
+  position: absolute;
+  left: 45px;
+  top: -8%;
+  z-index: 1;
+`;
+
+const Via = styled.p`
+  font-weight: bolder;
+  position: absolute;
+  left: 45px;
+  top: -8%;
+  z-index: 1;
+`;
+
+const OffStart = styled.p`
+  font-weight: bolder;
+  position: absolute;
+  left: 45px;
+  top: -8%;
+  z-index: 1;
+`;
+
+const Address = styled.p`
+  font-size: 15px;
+  position: absolute;
+  left: 55px;
+  top: 30%;
+  z-index: 1;
+`;
+
+const ArrowIcon = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-left: 1em;
+  vertical-align: middle;
+`;
+
+const StarIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: filter 0.3s, transform 0.3s;
+  animation: ${bounce} 1s infinite;
+  
+  &.clicked {
+    filter: brightness(0) saturate(100%) invert(74%) sepia(20%) saturate(550%) hue-rotate(56deg) brightness(98%) contrast(89%);
+    transform: translateY(-7px);
+    animation: none; /* Stop animation when clicked */
+  }
+`;
+
+const ModalWhole = styled.div`
+`;
+
+const ModalContent = styled.div`  
+`;
+
+const ModalClose = styled.span`
+`;
 
 const PathPage = () => {
   const [clickedStars, setClickedStars] = useState([false, false, false]);
@@ -29,90 +191,89 @@ const PathPage = () => {
   return (
     <PageContainer>
       <AppBar title='내 경로 모아보기' />
-      <ContentContainer > 
-        <div>
-          {/* 해시태그 표시 */}
-          <div className='pathsContainer'>
-            <div className='pathsTagRow'>
-              {tagsRow1.map((tag, index) => (
-                <button key={index} className='pathsTag' style={{ backgroundColor: tag.color }}>
-                  {tag.text}
-                </button>
-              ))}
-            </div>
+      <ContentContainer>
+        <PathsTagContainer>
+          <PathsTagRow>
+            {tagsRow1.map((tag, index) => (
+              <PathsTag key={index} bgColor={tag.color}>
+                {tag.text}
+              </PathsTag>
+            ))}
+          </PathsTagRow>
+          <TagsLarge>
+            {tagsRow2.map((tag, index) => (
+              <PathsTag key={index} bgColor={tag.color}>
+                {tag.text}
+              </PathsTag>
+            ))}
+          </TagsLarge>
+        </PathsTagContainer>
 
-            <div className='tagsLarge'>
-              {tagsRow2.map((tag, index) => (
-                <button key={index} className='pathsTag' style={{ backgroundColor: tag.color }}>
-                  {tag.text}
-                </button>
-              ))}
-            </div>
-          </div>
+        <Route>
+          <Start>
+            <OnStart>출발지</OnStart>
+            <Address>출발지 주소 / 설명 / 이름</Address>
+            <SmallCircleButton>1</SmallCircleButton>
+          </Start>
+          <ArrowIcon src={arrowImage} alt='arrow' />
 
-          <div className='route'>
-            <button className='start'>
-              <p className='onStart'>출발지</p>
-              <p>출발지 주소 / 설명 / 이름</p>
-            </button>
+          <ViaPoint>
+            <Via>경유지 1</Via>
+            <Address>경유지 주소 / 설명 / 이름</Address>
+            <StarIcon
+              src={heartImage}
+              alt='Star'
+              className={clickedStars[0] ? 'clicked' : ''}
+              onClick={() => handleStarClick(0)}
+            />
+            <SmallCircleButton>2</SmallCircleButton>
+          </ViaPoint>
 
-            <img src={arrowImage} alt='arrow' className='arrowIcon1' />
+          <ArrowIcon src={arrowImage} alt='arrow' />
 
-            <button className='viapoint'>
-              <p className='via1'>경유지 1</p>
-              <p>경유지 주소 / 설명 / 이름</p>
-              <img
-                src={heartImage}
-                alt='Star'
-                className={`starIcon1 ${clickedStars[0] ? 'clicked' : ''}`}
-                onClick={() => handleStarClick(0)}
-              />
-            </button>
+          <ViaPoint>
+            <Via>경유지 2</Via>
+            <Address>경유지 주소 / 설명 / 이름</Address>
+            <StarIcon
+              src={heartImage}
+              alt='Star'
+              className={clickedStars[1] ? 'clicked' : ''}
+              onClick={() => handleStarClick(1)}
+            />
+            <SmallCircleButton>3</SmallCircleButton>
+          </ViaPoint>
 
-            <img src={arrowImage} alt='arrow' className='arrowIcon2' />
+          <ArrowIcon src={arrowImage} alt='arrow' />
 
-            <button className='viapoint'>
-              <p className='via2'>경유지 2</p>
-              <p>경유지 주소 / 설명 / 이름</p>
-              <img
-                src={heartImage}
-                alt='Star'
-                className={`starIcon2 ${clickedStars[1] ? 'clicked' : ''}`}
-                onClick={() => handleStarClick(1)}
-              />
-            </button>
+          <ViaPoint>
+            <Via>경유지 3</Via>
+            <Address>경유지 주소 / 설명 / 이름</Address>
+            <StarIcon
+              src={heartImage}
+              alt='Star'
+              className={clickedStars[2] ? 'clicked' : ''}
+              onClick={() => handleStarClick(2)}
+            />
+            <SmallCircleButton>4</SmallCircleButton>
+          </ViaPoint>
 
-            <img src={arrowImage} alt='arrow' className='arrowIcon3' />
+          <ArrowIcon src={arrowImage} alt='arrow' />
 
-            <button className='viapoint'>
-              <p className='via3'>경유지 3</p>
-              <p>경유지 주소 / 설명 / 이름</p>
-              <img
-                src={heartImage}
-                alt='Star'
-                className={`starIcon3 ${clickedStars[2] ? 'clicked' : ''}`}
-                onClick={() => handleStarClick(2)}
-              />
-            </button>
+          <Destination>
+            <OffStart>도착지</OffStart>
+            <Address>도착지 주소 / 설명 / 이름</Address>
+            <SmallCircleButton>5</SmallCircleButton>
+          </Destination>
+        </Route>
 
-            <img src={arrowImage} alt='arrow' className='arrowIcon4' />
-
-            <button className='destination'>
-              <p className='offStart'>도착지</p>
-              <p>도착지 주소 / 설명 / 이름</p>
-            </button>
-          </div>
-
-          {/* 모달 창 */}
-          {showModal && (
-            <div className='modalWhole'>
-              <div className='modalContent'>
-                <span className='modalClose' onClick={() => setShowModal(false)}>×</span>
-                <p>모달 내용</p>
-              </div>
-            </div>
-          )}
-        </div>
+        {showModal && (
+          <ModalWhole>
+            <ModalContent>
+              <ModalClose onClick={() => setShowModal(false)}>×</ModalClose>
+              <p>모달 내용</p>
+            </ModalContent>
+          </ModalWhole>
+        )}
       </ContentContainer>
     </PageContainer>
   );

@@ -1,4 +1,4 @@
-/* 앱바 스타일 */
+/* 앱바 스타일 (AppBar 컴포넌트) */
 .appBar {
     position: fixed; /* 앱바를 화면 상단에 고정 */
     top: 0;
@@ -10,10 +10,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
     padding: 10px; /* 패딩 추가 */
     box-sizing: border-box; /* 패딩과 테두리가 크기에 포함되도록 설정 */
-}
+  }
   
   /* 모달 전체 배경 */
-.modalWhole {
+  .modalWhole {
     position: fixed; /* 모달을 화면 전체에 고정 */
     top: 0;
     left: 0;
@@ -25,10 +25,10 @@
     justify-content: center;
     align-items: center;
     overflow: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-}
+  }
   
-/* 모달 내용 */
-.modalContent {
+  /* 모달 내용 */
+  .modalContent {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -38,13 +38,14 @@
     max-width: 90%; /* 최대 너비 설정 */
     max-height: 80%; /* 최대 높이 설정 */
     overflow: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-}
+  }
   
-/* 모달 닫기 버튼 */
-.modalClose {
+  /* 모달 닫기 버튼 */
+  .modalClose {
     position: absolute;
     top: 10px;
     right: 10px;
     font-size: 24px;
     cursor: pointer;
-}  
+  }
+  
