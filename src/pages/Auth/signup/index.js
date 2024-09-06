@@ -83,25 +83,21 @@ const Signup = () => {
           const signupData = {
               nickname: user.nickname,
               email: user.email,
-              password: user.password,  // password만 사용
+              password: user.password,
           };
           const result = await signup(signupData);
-          console.log('회원가입 성공:');
+          console.log('횐가입 성공', result);
           navigate('/signin');
       } catch (error) {
-          console.error('Caught error:', error); // 디버깅용
-  
-          if (error.nickname) {
-              setErrors({ nickname: error.nickname });
-          } else if (error.email) {
-              setErrors({ email: error.email });
-          } else if (error.general) {
-              setErrors({ general: error.general });
-          } else {
-              setErrors({ general: '회원가입 중 알 수 없는 오류가 발생했습니다.' });
-          }
+        if (error.errorList) {
+          setErrors({ general: error.errorList.join('\n') });
+        } else if (typeof error === 'object') {
+          setErrors(error);
+        } else {
+          setErrors({ general: '회원가입 중 오류가 발생했습니다.' });
+        }
       }
-  };
+    };
   
     return (
       <PageContainer style={{ backgroundColor: 'white' }}>
@@ -118,7 +114,7 @@ const Signup = () => {
               placeholder="닉네임을 입력해주세요."
               onChange={(value) => handleChange('nickname', value)}
             />
-            {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
+            {errors.nickname && <ErrorMessage>{errors.nickname}</ErrorMessage>}
           </InputGroupWrapper>
   
           <InputGroupWrapper>

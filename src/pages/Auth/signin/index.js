@@ -35,27 +35,30 @@ const ErrorMessage = styled.p`
     margin-top: 5px;
     `;
 
-
 const Signin = () => {
   const navigate = useNavigate();
-
   const [user, setUser] = useRecoilState(userState);
   const [errors, setErrors] = useState({});
 
   const handleChange = (name, value) => {
     setUser({ ...user, [name]: value });
   };
+
   const handleLogin = async () => {
     try {
       const result = await login(user.email, user.password);
       console.log('로그인 성공:', result);
-      setUser({ ...user, isLoggedIn: true });
+      
       // 토큰 저장
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('user_id', result.user_id);
+      localStorage.setItem('refresh', result.refresh); 
+      localStorage.setItem('access', result.access);
+
       // 로그인 성공 후 리다이렉트
+      setUser({ ...user, isLoggedIn: true });
       navigate('/main');
     } catch (error) {
+       console.error('로그인 증 error : ', error);
+
       if (error.email) {
         setErrors({ email: error.email });
       } else if (error.password) {

@@ -14,7 +14,7 @@ const LikedButtonImg = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
-  top: 427px;
+  top: 435px;
   left: 2%;
   z-index: 0;
 `
