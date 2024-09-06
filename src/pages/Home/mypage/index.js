@@ -76,7 +76,7 @@ function Mypage() {
     navigate('/signin');
   };
 
-  return (
+    return (
     <PageContainer>
       <AppBar title='마이페이지' />
       <ContentContainer>
@@ -100,5 +100,6 @@ function Mypage() {
     </PageContainer>
   );
 }
+
 
 export default Mypage;
