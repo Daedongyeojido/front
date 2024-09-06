@@ -51,22 +51,22 @@ function Mypage() {
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
   const [errors, setErrors] = useState({});
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const data = await UserMail();
-  //       setUserInfo({
-  //         username: data.username || 'User',
-  //         email: data.email || 'No Email'
-  //       });
-  //     } catch (error) {
-  //       console.error('Failed to fetch user info', error);
-  //       setErrors({ general: error.general || 'Failed to fetch user info' });
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const data = await UserMail();
+        setUserInfo({
+          username: data.username || 'User',
+          email: data.email || 'No Email'
+        });
+      } catch (error) {
+        console.error('Failed to fetch user info', error);
+        setErrors({ general: error.general || 'Failed to fetch user info' });
+      }
+    };
 
-  //   fetchUserInfo();
-  // }, []);
+    fetchUserInfo();
+  }, []);
 
   const handleMyPathClick = () => {
     navigate('/mypath');
