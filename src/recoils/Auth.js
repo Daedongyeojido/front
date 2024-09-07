@@ -7,7 +7,6 @@ export const userState = atom({
         email: '',
         password: '',
         nickname: '',
-        confirmPassword: '',
         isLoggedIn: false,
         isRegistered: false,
     },

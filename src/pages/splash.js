@@ -28,7 +28,7 @@ const Text = styled.p`
 `;
 
 const SplashWrapper = styled.div`
-    display: {isHidden ? 'none' : 'block'};
+    display: ${({ isHidden }) => (isHidden ? 'none' : 'block')};
 `;
 
 const SplashScreen = () => {
@@ -40,8 +40,8 @@ const SplashScreen = () => {
 
     useEffect(() => {
         const checkAuth = () => {
-        const isAuthenticated = false;
-        return isAuthenticated;
+        const token = localStorage.getItem('token');
+        return !!token;
         };
 
         const timer = setTimeout(() => {

@@ -151,7 +151,7 @@ const SearchModal = ({
         )}
       </ButtonGroup>
       <SearchResultContainer>
-        {searchResults.map((place) => (
+        {searchResults && searchResults.map((place) => (
           <SearchResult
             key={place.id}
             onClick={() => handlePlaceSelect(place)}

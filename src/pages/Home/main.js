@@ -130,20 +130,23 @@ function Home() {
       if (isStartSearch) {
         setStartPoint({
           name: selectedPlace.place_name,
-          x: selectedPlace.x,
-          y: selectedPlace.y,
+          x: selectedPlace.y, 
+          y: selectedPlace.x,  
+          address: selectedPlace.address_name
         });
       } else {
         setEndPoint({
           name: selectedPlace.place_name,
-          x: selectedPlace.x,
-          y: selectedPlace.y,
+          x: selectedPlace.y,
+          y: selectedPlace.x,
+          address: selectedPlace.address_name
         });
       }
       setShowModal(false);
       setIsSearched(false);
       setSelectedPlace(null);
     }
+    
   };
 
   const handleInputClick = (isStart) => {
@@ -192,7 +195,7 @@ function Home() {
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>
         </RankContainer>
-        <Rank></Rank>
+        <Rank /> 
       </ContentContainer>
       {showModal && (
         <SearchModal

@@ -1,46 +1,52 @@
-import author from "./author";
+import instance from "./instance";
 
-// API call to fetch user email from profile
-export const UserMail = async () => {
-  try {
-    const response = await author.get('users/profile/', {
-      validateStatus: (status) => status < 500
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Fetch user data error:', error);
+// 로그인
+export const login = async (email, password) => {
+    try {
+      const response = await instance.post('/users/api/token/', { email, password });
+      return response.data;
+    } catch (error) {
+      console.error('Login error:',error); 
 
-    if (error.response) {
-      const { status, data } = error.response;
-      console.log('Error response data:', data);
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        console.log('Error response data:', data); // 실제 응답 데이터를 확인하기 위해 추가
 
-      let errorMessage = 'Error fetching user data';
-
-      switch (status) {
-        case 401:
-          errorMessage = 'Unauthorized: Please log in again';
-          // Clear tokens from local storage on unauthorized access
-          localStorage.removeItem('token');
-          localStorage.removeItem('user_id');
-          // Redirect to the sign-in page
-          window.location.href = '/signin/';
-          break;
-        case 404:
-          errorMessage = 'Endpoint not found';
-          break;
-        case 403:
-          errorMessage = 'Forbidden access';
-          break;
-        default:
-          if (data.errorList) {
-            errorMessage = data.errorList.join('\n');
-          }
-          break;
+        if(data.email) {
+          throw { email : data.email};
+        }
+        if(data.password) {
+          throw {password : data.password};
+        }
       }
+      throw { general: '로그인 중 오류가 발생했습니다.' };
 
-      throw new Error(errorMessage);
     }
+  };
+  
+  // 회원가입
+  export const signup = async (userData) => {
+    try {
+        const response = await instance.post('/users/signup/', userData);
+        return response.data;
+    } catch (error) {
+        console.error('Signup error:', error); // 디버깅을 위해 추가
 
-    throw new Error('Error fetching user data');
-  }
+        if (error.response && error.response.data) {
+            const data = error.response.data;
+            console.log('Error response data:', data); // 실제 응답 데이터를 확인하기 위해 추가
+
+            // 서버에서 반환된 에러 메시지를 처리
+            if (data.nickname) {
+                throw { nickname: data.nickname[0] };
+            }
+            if (data.email) {
+                throw { email: data.email };
+            }
+            if (data.errorList) {
+                throw { general: data.errorList.join('\n') };
+            }
+        }
+        throw { general: '회원가입 중 오류가 발생했습니다.' };
+    }
 };

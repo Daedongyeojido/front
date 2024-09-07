@@ -10,6 +10,7 @@ const StyledButton = styled.button`
   color: ${props => props.color || 'white'};
   font-size: ${props => props.fontSize || '20px'};
   font-weight: ${props => props.fontWeight || '600'};
+  font-family: 'IBM Plex Sans KR', sans-serif;
   cursor: pointer;
   display: flex;
   align-items: center;

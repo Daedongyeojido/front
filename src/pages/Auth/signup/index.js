@@ -66,31 +66,38 @@ const Signup = () => {
     const [user, setUser] = useRecoilState(userState);
     const [errors, setErrors] = useState({});
   
+    // const handleChange = (name, value) => {
+    //   setUser({ ...user, [name]: value });
+    // };
+
     const handleChange = (name, value) => {
-      setUser({ ...user, [name]: value });
-    };
+      setUser((prevUser) => {
+          const updatedUser = { ...prevUser, [name]: value };
+          console.log('Updated User:', updatedUser); // 확인용 로그
+          return updatedUser;
+      });
+  };
   
     const handleSignup = async () => {
-        try {
+      try {
           const signupData = {
-            username: user.username,
-            email: user.email,
-            password1: user.password,
-            password2: user.confirmPassword
+              nickname: user.nickname,
+              email: user.email,
+              password: user.password,
           };
           const result = await signup(signupData);
-          console.log('회원가입 성공:', result);
+          console.log('횐가입 성공', result);
           navigate('/signin');
-        } catch (error) {
-          if (error.errorList) {
-            setErrors({ general: error.errorList.join('\n') });
-          } else if (typeof error === 'object') {
-            setErrors(error);
-          } else {
-            setErrors({ general: '회원가입 중 오류가 발생했습니다.' });
-          }
+      } catch (error) {
+        if (error.errorList) {
+          setErrors({ general: error.errorList.join('\n') });
+        } else if (typeof error === 'object') {
+          setErrors(error);
+        } else {
+          setErrors({ general: '회원가입 중 오류가 발생했습니다.' });
         }
-      };
+      }
+    };
   
     return (
       <PageContainer style={{ backgroundColor: 'white' }}>
@@ -101,13 +108,13 @@ const Signup = () => {
           <InputGroupWrapper>
             <Label>닉네임</Label>
             <LoginTextFrom
-              value={user.username}
+              value={user.nickname}
               type="text"
-              name="username"
+              name="nickname"
               placeholder="닉네임을 입력해주세요."
-              onChange={(value) => handleChange('username', value)}
+              onChange={(value) => handleChange('nickname', value)}
             />
-            {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
+            {errors.nickname && <ErrorMessage>{errors.nickname}</ErrorMessage>}
           </InputGroupWrapper>
   
           <InputGroupWrapper>
@@ -131,21 +138,9 @@ const Signup = () => {
               placeholder="비밀번호를 입력해주세요."
               onChange={(value) => handleChange('password', value)}
             />
-            {errors.password1 && <ErrorMessage>{errors.password1}</ErrorMessage>}
+            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
           </InputGroupWrapper>
-  
-          <InputGroupWrapper>
-            <Label>비밀번호 확인</Label>
-            <LoginTextFrom
-              value={user.confirmPassword}
-              type="password"
-              name="confirmPassword"
-              placeholder="비밀번호를 재확인해주세요."
-              onChange={(value) => handleChange('confirmPassword', value)}
-            />
-            {errors.password2 && <ErrorMessage>{errors.password2}</ErrorMessage>}
-          </InputGroupWrapper>
-  
+
           <SignupButtonWrapper>
             <Button 
               onClick={handleSignup}
