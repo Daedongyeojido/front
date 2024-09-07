@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserMail } from "../../../apis/auth"; // Ensure the import path is correct
+import { UserMail } from '../../../apis/mypage'; 
+import { Logout } from '../../../apis/logout';
 import styled from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 
 const UserInfo = styled.div`
-  .username {
+  .name {
     font-size: 25px;
     font-weight: bold;
     text-align: center;
@@ -46,22 +47,34 @@ const Divider = styled.hr`
   margin: 20px 0;
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+`;
+
 function Mypage() {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [userInfo, setUserInfo] = useState({
+    nickname: '',
+    email: ''
+  });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      setLoading(true);
       try {
         const data = await UserMail();
         setUserInfo({
-          username: data.username || 'User',
+          nickname: data.nickname || 'MyUser',
           email: data.email || 'No Email'
         });
       } catch (error) {
         console.error('Failed to fetch user info', error);
-        setErrors({ general: error.general || 'Failed to fetch user info' });
+        setErrors({ general: error.message || 'Failed to fetch user info' });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -72,30 +85,53 @@ function Mypage() {
     navigate('/mypath');
   };
 
-  const handleLogoutClick = () => {
-    navigate('/signin');
-  };
-
+  const handleLogoutClick = async () => {
+    setLoading(true);
+    try {
+      // Call the logout API
+      await Logout();
+  
+      // Clear tokens from local storage after successful logout
+      localStorage.removeItem('token');
+      localStorage.removeItem('user_id');
+  
+      // Redirect to the sign-in page
+      navigate('/signin');
+    } catch (error) {
+      console.error('Failed to log out', error);
+      setErrors({ general: error.message || 'Failed to log out' });
+    } finally {
+      setLoading(false);
+    }
+  };  
+  
   return (
     <PageContainer>
       <AppBar title='마이페이지' />
       <ContentContainer>
         <UserInfo>
-          <div className='username'>
-            {userInfo.username ? `${userInfo.username}님 안녕하세요!` : 'Loading...'}
+          <div className='name'>
+            {loading ? 'Loading...' : userInfo.nickname ? `${userInfo.nickname}님 안녕하세요!` : 'MyUser'}
           </div>
           <div className='userSetting'>
             <div className='userEmail1'>이메일</div>
             <div className='userEmail2'>
-              {userInfo.email || 'Loading...'}
+              {loading ? 'Loading...' : userInfo.email || 'No Email'}
             </div>
           </div>
         </UserInfo>
+        {errors.general && <ErrorMessage>{errors.general}</ErrorMessage>}
         <Divider />
-        <MyPath onClick={handleMyPathClick}>내 경로 모아보기</MyPath>
-        <Divider />
-        <MyOut onClick={handleLogoutClick}>로그아웃</MyOut>
-        <Divider />
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <MyPath onClick={handleMyPathClick}>내 경로 모아보기</MyPath>
+            <Divider />
+            <MyOut onClick={handleLogoutClick}>로그아웃</MyOut>
+            <Divider />
+          </>
+        )}
       </ContentContainer>
     </PageContainer>
   );

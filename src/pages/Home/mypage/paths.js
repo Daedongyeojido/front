@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 import arrowImage from '../../../pages/Home/mypage/Arrow.png';
 import heartImage from '../../../pages/Home/mypage/Heart.png';
+import { fetchHashtagList } from '../../../apis/hashtag'; 
+import { fetchCategoryList } from '../../../apis/category';
 
-// Keyframes for bounce animation
 const bounce = keyframes`
   0%, 100% {
     transform: translateY(0);
@@ -15,15 +16,13 @@ const bounce = keyframes`
   }
 `;
 
-// Styled components
 const PathsTagContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 10px 10px 10px;
-  margin-top: -30px; /* Adjust this value to move the container up */
-  background-color: #f4f4f4;
+  margin-top: -30px;
   position: relative;
   z-index: 1;
 `;
@@ -34,6 +33,9 @@ const PathsTagRow = styled.div`
   overflow-x: auto;
   gap: 32px;
   width: 100%;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TagsLarge = styled.div`
@@ -43,18 +45,21 @@ const TagsLarge = styled.div`
   gap: 20px;
   margin-top: 10px;
   width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PathsTag = styled.button`
   display: inline-block;
-  padding: 7px 10px;
+  padding: 8px 10px;
   border-radius: 12px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   border: none;
   white-space: nowrap;
   background-color: ${(props) => props.bgColor};
+  cursor: pointer;
 `;
 
 const Route = styled.div`
@@ -86,8 +91,8 @@ const SmallCircleButton = styled.button`
   background-color: #575757;
   border: none;
   position: absolute;
-  top: 5px; /* Adjust as needed */
-  left: 15px; /* Adjust as needed */
+  top: 5px;
+  left: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +145,7 @@ const ArrowIcon = styled.img`
   vertical-align: middle;
 `;
 
-const StarIcon = styled.img`
+const HeartIcon = styled.img`
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -154,7 +159,7 @@ const StarIcon = styled.img`
   &.clicked {
     filter: brightness(0) saturate(100%) invert(74%) sepia(20%) saturate(550%) hue-rotate(56deg) brightness(98%) contrast(89%);
     transform: translateY(-7px);
-    animation: none; /* Stop animation when clicked */
+    animation: none;
   }
 `;
 
@@ -167,9 +172,54 @@ const ModalContent = styled.div`
 const ModalClose = styled.span`
 `;
 
-const PathPage = () => {
+const PathPage = ({ onTagColorChange, onCloseModal }) => {
   const [clickedStars, setClickedStars] = useState([false, false, false]);
-  const [showModal, setShowModal] = useState(false);
+  const [hashtags, setHashtags] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const hashtag = [
+    { text: '#차분힐링', color: '#FDA043' }, 
+    { text: '#초록초록', color: '#1DA514' },
+    { text: '#피로회복', color: '#6A50D3' },
+    { text: '#도파민디톡스', color: '#35A0FD' },
+    { text: '#에너지넘치는', color: '#FF9FA5' }
+  ];
+
+  useEffect(() => {
+    const loadHashtags = async () => {
+      try {
+        console.log('Loading hashtags...');
+        const data = await fetchHashtagList();
+        console.log('Hashtags:', data);
+        setHashtags(data);
+      } catch (error) {
+        console.error('Error loading hashtags:', error);
+        setError(error.message || 'Failed to fetch hashtags');
+      }
+    };
+
+    const loadCategories = async () => {
+      try {
+        console.log('Loading categories...');
+        const data = await fetchCategoryList();
+        console.log('Categories:', data);
+        setCategories(data);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        setError(error.message || 'Failed to fetch categories');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadHashtags();
+    loadCategories();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   const handleStarClick = (index) => {
     const newClickedStars = [...clickedStars];
@@ -177,16 +227,13 @@ const PathPage = () => {
     setClickedStars(newClickedStars);
   };
 
-  const tags = [
-    { text: '#차분힐링', color: '#59AF7E' },
-    { text: '#초록초록', color: '#59AF7E' },
-    { text: '#피로회복', color: '#7079BC' },
-    { text: '#도파민디톡스', color: '#F9B8BC' },
-    { text: '#에너지넘치는', color: '#F9B8BC' }
-  ];
+  const handleTagClick = (color) => {
+    onTagColorChange(color); 
+    onCloseModal();
+  };
 
-  const tagsRow1 = tags.slice(0, 3);
-  const tagsRow2 = tags.slice(3);
+  const hashtagsRow1 = hashtag.slice(0, 3);
+  const hashtagsRow2 = hashtag.slice(3);
 
   return (
     <PageContainer>
@@ -194,15 +241,23 @@ const PathPage = () => {
       <ContentContainer>
         <PathsTagContainer>
           <PathsTagRow>
-            {tagsRow1.map((tag, index) => (
-              <PathsTag key={index} bgColor={tag.color}>
+            {hashtagsRow1.map((tag, index) => (
+              <PathsTag
+                key={index}
+                bgColor={tag.color}
+                onClick={() => handleTagClick(tag.color)}
+              >
                 {tag.text}
               </PathsTag>
             ))}
           </PathsTagRow>
           <TagsLarge>
-            {tagsRow2.map((tag, index) => (
-              <PathsTag key={index} bgColor={tag.color}>
+            {hashtagsRow2.map((tag, index) => (
+              <PathsTag
+                key={index}
+                bgColor={tag.color}
+                onClick={() => handleTagClick(tag.color)}
+              >
                 {tag.text}
               </PathsTag>
             ))}
@@ -220,7 +275,7 @@ const PathPage = () => {
           <ViaPoint>
             <Via>경유지 1</Via>
             <Address>경유지 주소 / 설명 / 이름</Address>
-            <StarIcon
+            <HeartIcon
               src={heartImage}
               alt='Star'
               className={clickedStars[0] ? 'clicked' : ''}
@@ -234,7 +289,7 @@ const PathPage = () => {
           <ViaPoint>
             <Via>경유지 2</Via>
             <Address>경유지 주소 / 설명 / 이름</Address>
-            <StarIcon
+            <HeartIcon
               src={heartImage}
               alt='Star'
               className={clickedStars[1] ? 'clicked' : ''}
@@ -248,7 +303,7 @@ const PathPage = () => {
           <ViaPoint>
             <Via>경유지 3</Via>
             <Address>경유지 주소 / 설명 / 이름</Address>
-            <StarIcon
+            <HeartIcon
               src={heartImage}
               alt='Star'
               className={clickedStars[2] ? 'clicked' : ''}
@@ -265,15 +320,6 @@ const PathPage = () => {
             <SmallCircleButton>5</SmallCircleButton>
           </Destination>
         </Route>
-
-        {showModal && (
-          <ModalWhole>
-            <ModalContent>
-              <ModalClose onClick={() => setShowModal(false)}>×</ModalClose>
-              <p>모달 내용</p>
-            </ModalContent>
-          </ModalWhole>
-        )}
       </ContentContainer>
     </PageContainer>
   );
