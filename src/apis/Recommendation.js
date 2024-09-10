@@ -1,5 +1,5 @@
 import axios from "axios";
-import instance from "./instance";
+import instance from "./Instance";
 
 // 경로 추천 API
 export const routeRecommendation = async (startPoint, endPoint, avoidCategories) => {

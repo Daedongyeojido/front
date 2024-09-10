@@ -113,6 +113,7 @@ function Home() {
 
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
+    console.log(place);
     const moveLatLng = new kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(moveLatLng);
 

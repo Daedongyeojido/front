@@ -86,7 +86,7 @@ const Signup = () => {
               password: user.password,
           };
           const result = await signup(signupData);
-          console.log('횐가입 성공', result);
+          console.log('회원가입 성공', result);
           navigate('/signin');
       } catch (error) {
         if (error.errorList) {
