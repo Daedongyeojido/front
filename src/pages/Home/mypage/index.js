@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserMail } from '../../../apis/mypage'; 
+import { UserMail } from '../../../apis/usermail'; 
 import { Logout } from '../../../apis/logout';
 import styled from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
