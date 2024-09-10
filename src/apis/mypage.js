@@ -1,4 +1,4 @@
-import instance from "./instance";
+import instance from "./Instance";
 
 //마이페이지  api
 export const mypage = async () => {

@@ -5,11 +5,13 @@ import styled from "styled-components";
 import { PageContainer, ContentContainer } from '../../components/Layout';
 import AppBar from '../../components/AppBar';
 import Button from '../../components/Button';
-import Pointer from '../../Image/pointer.png'
-import StartPoint from '../../Image/startpoint.png'
+import Pointer from '../../Image/Pointer.png'
+import StartPoint from '../../Image/Startpoint.png'
 import EndPoint from '../../Image/endpoint.png'
 import { routeRecommendation } from '../../apis/Recommendation'
 import ArrowImg from '../../Image/ArrowImg.png';
+import DeletedButton from '../../Image/DeleteButton.png'
+import { DeleteStopOver } from '../../apis/DeleteStopOver';
 
 const RouteInfoContainer = styled.div`
   position: relative;
@@ -35,7 +37,6 @@ const RouteLine = styled.span`
   display: flex;
   margin-bottom: 5px;
 `;
-
 
 const OverlayImage = styled.img`
   position: absolute;
@@ -91,10 +92,17 @@ const WaypointInfo = styled.div`
   padding-left: 10px; /* Circle과 간격을 조금 더 줌 */
 `;
 
+const Icon = styled.img`
+  margin: 25px 3px 0px 0px;
+  width: 4%;
+  height: 4%;
+  cursor: pointer;
+`;
 
 const handleSaveRoute = () => {
 
 }
+
 
 function Map() {
   const location = useLocation();
@@ -102,7 +110,8 @@ function Map() {
   const mapRef = useRef(null);
   const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
   const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
-  const [routeData, setRouteData] = useState({places :[]});
+  const [routeData, setRouteData] = useState({places :[], map_pins: []});
+
 
   useEffect(() => {
     const handleGetRoute = async () => {
@@ -246,6 +255,33 @@ function Map() {
     };
   }, [startPoint, endPoint]);
 
+  const handleRouteDelete = async (id) => {
+    // try {
+
+      // let routeID = routeData.map_pins[index].id;
+
+      // const result = await DeleteStopOver(id);
+      // console.log(id);
+      
+      // console.log('경유지 삭제 성공', result); 
+
+      setRouteData(prevRouteData => {
+        const map_pins = routeData.map_pins; //배열
+        let newRoute = map_pins.filter(pin => pin.id !== id) 
+        let newPlaces = routeData.places.filter((_, index)=> routeData.map_pins[index].id !== id);
+  
+        return {
+          ...prevRouteData, 
+          map_pins: map_pins,
+          places: newPlaces,
+        };
+      })
+
+    // } catch (error) {
+    //   console.error('삭제 실패 from Map/index :', error);
+    //   }
+    }
+
   return (
     <PageContainer>
       <AppBar title="추천 여정 확인하기" />
@@ -272,13 +308,15 @@ function Map() {
           {routeData?.places?.length > 0 ? (
             routeData.places.map((place, index) => (
               <>
-              <StopOverItem key={index}>
+              <StopOverItem key={place.place_name}>
                 <Circle>{index + 1}</Circle>
                 <WaypointInfo>
                   <div>경유지 {index +1} | {place.place_name}</div>
-                  <div >주소 | {place.place_address}</div>
+                  <div>주소  | {place.place_address}</div>
                   <div>설명  | {place.subCategory}</div>
                 </WaypointInfo>
+                <Icon src={DeletedButton} 
+                  onClick={() => handleRouteDelete(routeData.map_pins[index].id)}/>
               </StopOverItem>
               </>
             ))

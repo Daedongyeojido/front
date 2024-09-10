@@ -1,4 +1,4 @@
-import instance from "./instance";
+import instance from "./Instance";
 
 // 로그인
 export const login = async (email, password) => {
