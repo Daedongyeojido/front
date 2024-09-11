@@ -9,9 +9,8 @@ import Pointer from '../../Image/Pointer.png'
 import StartPoint from '../../Image/Startpoint.png'
 import EndPoint from '../../Image/endpoint.png'
 import { routeRecommendation } from '../../apis/Recommendation'
-import ArrowImg from '../../Image/ArrowImg.png';
 import DeletedButton from '../../Image/DeleteButton.png'
-import { DeleteStopOver } from '../../apis/DeleteStopOver';
+import SaveRouteModal from '../../components/SaveRouteModal';
 
 const RouteInfoContainer = styled.div`
   position: relative;
@@ -52,10 +51,11 @@ const Text = styled.p`
   font-weight: bold;
   font-size: 17px;
 `;
-
+ 
 const MapContainer = styled.div`
   width: 100%;
   height: 400px;
+  min-height: 400px;
   margin-bottom: 20px;
 `;
 
@@ -99,10 +99,6 @@ const Icon = styled.img`
   cursor: pointer;
 `;
 
-const handleSaveRoute = () => {
-
-}
-
 
 function Map() {
   const location = useLocation();
@@ -111,7 +107,7 @@ function Map() {
   const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
   const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
   const [routeData, setRouteData] = useState({places :[], map_pins: []});
-
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const handleGetRoute = async () => {
@@ -146,6 +142,8 @@ function Map() {
         console.log("카카오맵 API 로드 완료"); // 디버그 메시지
 
         const container = document.getElementById("map");
+        console.log('container',container);
+        
         const options = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
           level: 3,
@@ -153,26 +151,6 @@ function Map() {
         const map = new kakao.maps.Map(container, options);
         mapRef.current = map;
 
-        // if (routeData) {
-        //   console.log(routeData);
-        //   const bounds = new kakao.maps.LatLngBounds();
-        //   const linepath = routeData && routeData.map_pins.map(pin => {
-        //     const position = new kakao.map.LatLng(pin.place_latitude, pin.place_longitude);
-        //     bounds.extend(position);
-        //     return position;
-        //   });
-
-        //   //폴리라인(경로막대)그리기 
-        //   const polyline = new kakao.maps.Polyline({
-        //     path: linepath,
-        //     strokeColor: '#FF0000',
-        //     strokeOpacity: 0.7,
-        //     strokeStyle: 'solid'
-        //   });
-
-        //   polyline.setMap(map);
-        //   map.setBounds(bounds);
-        //}
 
         if (startPoint && endPoint) {
           const bounds = new kakao.maps.LatLngBounds();
@@ -256,14 +234,6 @@ function Map() {
   }, [startPoint, endPoint]);
 
   const handleRouteDelete = async (id) => {
-    // try {
-
-      // let routeID = routeData.map_pins[index].id;
-
-      // const result = await DeleteStopOver(id);
-      // console.log(id);
-      
-      // console.log('경유지 삭제 성공', result); 
 
       setRouteData(prevRouteData => {
         const map_pins = routeData.map_pins; //배열
@@ -277,9 +247,10 @@ function Map() {
         };
       })
 
-    // } catch (error) {
-    //   console.error('삭제 실패 from Map/index :', error);
-    //   }
+    }
+
+    const handleSaveRoute = () => { 
+      setModalOpen(true)
     }
 
   return (
@@ -293,7 +264,6 @@ function Map() {
               <RouteText>
                 <RouteLine>{startPoint.name}부터</RouteLine>
                 <RouteLine>{endPoint.name}까지</RouteLine>
-
               </RouteText>
             ) : (
               '경로 정보가 없습니다.'
@@ -301,9 +271,11 @@ function Map() {
           </RouteInfoBox>
           <OverlayImage src={Pointer} alt="Overlay" />
         </RouteInfoContainer>
+
         <MapContainer id="map" />
 
         {/* 경유지 정보를 화면에 표시 */}
+
         <WaypointList>
           {routeData?.places?.length > 0 ? (
             routeData.places.map((place, index) => (
@@ -331,12 +303,14 @@ function Map() {
           경로 저장하기
         </Button>
 
-        <Button
-          onClick={handleSaveRoute}
+        {/* <Button
+          onClick={''}
         >
           다른 경로 추천받기
-        </Button>
-
+        </Button> */}
+          {modalOpen && (
+            <SaveRouteModal setModalOpen={setModalOpen} />
+          )}
       </ContentContainer>
     </PageContainer>
   );

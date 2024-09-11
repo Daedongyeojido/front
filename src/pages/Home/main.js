@@ -81,11 +81,13 @@ function Home() {
     if (!kakaoLoaded) return;
 
     const container = document.getElementById("map");
+    
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 3,
     };
     mapRef.current = new kakao.maps.Map(container, options);
+    
   };
   const handleSearch = () => {
     if (!kakaoLoaded) return;
@@ -113,7 +115,6 @@ function Home() {
 
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
-    console.log(place);
     const moveLatLng = new kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(moveLatLng);
 

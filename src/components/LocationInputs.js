@@ -93,7 +93,8 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
         height= '50px'
         width= '85%'
         backgroundColor='#eeeeee'
-        customStyle='box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25)' //customstyle로 쓰라고 warning뜸
+        borderRadius='25px'
+        customStyle='box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25)' //customstyle로 쓰라고 warning뜸
         color='black'
         onClick={handleFilterModal}
         >

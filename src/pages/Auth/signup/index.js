@@ -73,7 +73,6 @@ const Signup = () => {
     const handleChange = (name, value) => {
       setUser((prevUser) => {
           const updatedUser = { ...prevUser, [name]: value };
-          console.log('Updated User:', updatedUser); // 확인용 로그
           return updatedUser;
       });
   };

@@ -40,9 +40,9 @@ const SplashScreen = () => {
 
     useEffect(() => {
         const checkAuth = () => {
-        const token = localStorage.getItem('token');
-        return !!token;
-        };
+            const isAuthenticated = false;
+            return isAuthenticated;
+            };
 
         const timer = setTimeout(() => {
         setIsHidden(true);
