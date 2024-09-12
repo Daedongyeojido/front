@@ -28,7 +28,7 @@ const Text = styled.p`
 `;
 
 const SplashWrapper = styled.div`
-    display: ${({ isHidden }) => (isHidden ? 'none' : 'block')};
+    display: {isHidden ? 'none' : 'block'};
 `;
 
 const SplashScreen = () => {
