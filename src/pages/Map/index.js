@@ -111,10 +111,12 @@ function Map() {
     const handleGetRoute = async () => {
       try {
         if (startPoint && endPoint) {
-          console.log(startPoint);
-          console.log(endPoint);
+          console.log(location.state);
           
-          
+          console.log('s', startPoint);
+          console.log('e', endPoint);
+
+
           const data = await routeRecommendation(startPoint, endPoint, ['찻집']);
 
           // console.log('Received data:', data); // 응답 데이터 확인

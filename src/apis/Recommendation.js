@@ -3,17 +3,17 @@ import instance from "./instance";
 
 // 경로 추천 API
 export const routeRecommendation = async (startPoint, endPoint, avoidCategories) => {
-
+    
     try {
         const response = await instance.post('/users/recommendations/', {
             startpoint_name: startPoint.name,
             startpoint_address: startPoint.address,
-            startpoint_x: startPoint.x,
-            startpoint_y: startPoint.y,
+            startpoint_x: startPoint.y,
+            startpoint_y: startPoint.x,
             endpoint_name: endPoint.name,
             endpoint_address: endPoint.address,
-            endpoint_x: endPoint.x,
-            endpoint_y: endPoint.y,
+            endpoint_x: endPoint.y,
+            endpoint_y: endPoint.x,
             avoid_categories: avoidCategories
         });
 
