@@ -81,11 +81,13 @@ function Home() {
     if (!kakaoLoaded) return;
 
     const container = document.getElementById("map");
+    
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 3,
     };
     mapRef.current = new kakao.maps.Map(container, options);
+    
   };
   const handleSearch = () => {
     if (!kakaoLoaded) return;
@@ -113,7 +115,8 @@ function Home() {
 
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
-    console.log(place);
+    console.log('place', place);
+    
     const moveLatLng = new kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(moveLatLng);
 
@@ -128,19 +131,21 @@ function Home() {
 
   const handleConfirmSelection = () => {
     if (selectedPlace) {
+      console.log('selectedPalce',selectedPlace);
+      
       if (isStartSearch) {
         setStartPoint({
           name: selectedPlace.place_name,
-          x: selectedPlace.y, 
-          y: selectedPlace.x,  
+          x: selectedPlace.x, 
+          y: selectedPlace.y,  
           address: selectedPlace.address_name
         });
       } else {
         setEndPoint({
-          name: selectedPlace.place_name,
-          x: selectedPlace.y,
-          y: selectedPlace.x,
-          address: selectedPlace.address_name
+          name: selectedPlace.address_name,
+          x: selectedPlace.x,
+          y: selectedPlace.y,
+          address: selectedPlace.place_name
         });
       }
       setShowModal(false);
@@ -178,6 +183,7 @@ function Home() {
   const handleFilterModal = () => {
     setShowFilterModal(!showFilterModal);
   };
+
 
   return (
     <PageContainer>

@@ -1,5 +1,5 @@
 import React from 'react'
-import instance from './Instance'
+import instance from './instance'
 
 export const DeleteStopOver = async (route_id, place_id) => {
     try {

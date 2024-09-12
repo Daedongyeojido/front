@@ -1,4 +1,4 @@
-import instance from "./Instance";
+import instance from "./instance";
 
 //추천 순위 api
 export const locationRank = async () => {
