@@ -7,7 +7,6 @@ import PathPage from './paths';
 import { useRecoilValue } from 'recoil';
 import { RouteDataState } from '../../../recoils/Location';
 import { showMyRoute } from '../../../apis/showMyRoute';
-import { showDetailRoute } from '../../../apis/showDetailRoute';
 
 const HashtagContainer = styled.div`
   display: flex;
@@ -154,6 +153,7 @@ function MyPathPage() {
     const handleShowRoute = async () => {
       try {
           const data = await showMyRoute();
+          console.log('Received data:', data); // 응답 데이터 확인
           if(data.routes && data.routes.length > 0 ){
             console.log('Received data:', data); // 응답 데이터 확인
             setRoutes(data.routes);
@@ -239,21 +239,20 @@ function MyPathPage() {
       <ContentContainer>
         <DateLabel>Date</DateLabel>
          {/* 불러온 경로들을 화면에 표시 */}
-         { routes > 0 ? ( 
-            routes.map((route) => (
-            <>
+         { routes.length > 0 ? ( 
+            routes.map((route, index) => (
               <MypathContainer onClick={() => handleRouteClick(route.route_id)} key={route.route_id}>
               <DepartandArrival>
-                <Depart>출발  | {route.start_point} </Depart>
-                <Arrival>도착 | {route.end_point}</Arrival>
+                <Depart> 출발  | {route.startpoint_name} </Depart>
+                <Arrival>도착 | {route.endpoint_name}</Arrival>
               </DepartandArrival>
             </MypathContainer>
-            </>
          ))
-        ) :(
-          <div>'정보가 없습니다.'</div>
+        ) : (
+          <div>정보가 없습니다.</div>
         )}
       </ContentContainer>
+
     </PageContainer>
   );
 }

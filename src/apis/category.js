@@ -1,9 +1,9 @@
-import author from './author';
+import instance from './instance';
 
 export const fetchCategoryList = async () => {
     try {
       console.log('Fetching category list...');
-      const response = await author.get('/category/categoryList/', {
+      const response = await instance.get('/category/categoryList/', {
         validateStatus: (status) => status < 500,
       });
       console.log('Response data:', response.data);

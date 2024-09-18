@@ -1,9 +1,9 @@
-import author from './author';
+import instance from './instance';
 
 export const fetchHashtagList = async () => {
   try {
     console.log('Fetching hashtag list...');
-    const response = await author.get('/users/hashtagList', {
+    const response = await instance.get('/users/hashtagList', {
       validateStatus: (status) => status < 500,
     });
     console.log('Response data:', response.data);

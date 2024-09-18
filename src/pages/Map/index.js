@@ -278,7 +278,6 @@ function Map() {
         <RouteInfoContainer>
           <RouteInfoBox>
             {startPoint && endPoint ? (
-
               <RouteText>
                 <RouteLine>{startPoint.name}부터</RouteLine>
                 <RouteLine>{endPoint.name}까지</RouteLine>

@@ -1,4 +1,3 @@
-import author from "./author";
 import instance from "./instance";
 
 // API call to fetch user email from profile

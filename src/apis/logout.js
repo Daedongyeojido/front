@@ -1,4 +1,4 @@
-import author from './author'; // Ensure this path is correct
+import instance from './instance';
 
 export const Logout = async () => {
   try {
@@ -10,7 +10,7 @@ export const Logout = async () => {
     console.log('Attempting to log out with token:', refreshToken);
 
     // Adjust payload or headers based on backend expectations
-    const response = await author.post('/users/logout/', {
+    const response = await instance.post('/users/logout/', {
       refresh: refreshToken // Adjust payload according to backend needs
     }, {
       headers: {
