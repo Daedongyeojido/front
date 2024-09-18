@@ -4,6 +4,8 @@ import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 import Modal from './modal';
 import PathPage from './paths';
+import { fetchHashtags } from '../../../apis/routeId';
+ 
 
 const HashtagContainer = styled.div`
   display: flex;
@@ -144,14 +146,15 @@ function MyPathPage() {
   const [dotColors, setDotColors] = useState([]);
 
   const tags = [
-    { text: '#차분힐링', color: '#FDA043' },
-    { text: '#초록초록', color: '#1DA514' },
-    { text: '#피로회복', color: '#6A50D3' },
-    { text: '#도파민디톡스', color: '#35A0FD' },
-    { text: '#에너지넘치는', color: '#FF9FA5' }
+    { id: 1, text: '#차분힐링', color: '#FDA043' },
+    { id: 2, text: '#초록초록', color: '#1DA514' },
+    { id: 3, text: '#피로회복', color: '#6A50D3' },
+    { id: 4, text: '#도파민디톡스', color: '#35A0FD' },
+    { id: 5, text: '#에너지넘치는', color: '#FF9FA5' }
   ];
 
-  const handleTagClick = (tag) => {
+  const handleTagClick = async (tag) => {
+    // Update selected tags
     setSelectedTags((prevTags) =>
       prevTags.includes(tag.text) ? prevTags.filter((t) => t !== tag.text) : [...prevTags, tag.text]
     );
@@ -165,6 +168,15 @@ function MyPathPage() {
       }
       return Array.from(newColors);
     });
+
+    try {
+      const route_id = 1; // You can dynamically set this value
+      const hashtag_id = tag.id;
+      const data = await fetchHashtags(route_id, hashtag_id);
+      console.log('Fetched data:', data); // Handle the fetched data as needed
+    } catch (error) {
+      console.error('Error fetching hashtag data:', error);
+    }
 
     setIsModalOpen(false); // Close the modal
   };
@@ -188,6 +200,7 @@ function MyPathPage() {
               key={index}
               className={selectedTags.includes(tag.text) ? 'selected' : ''}
               style={{ backgroundColor: tag.color }}
+              onClick={() => handleTagClick(tag)} // Add this line
             >
               {tag.text}
             </Hashtags>
@@ -196,12 +209,13 @@ function MyPathPage() {
         <TagsRow>
           {tags.slice(3).map((tag, index) => (
             <Hashtags
-              key={index}
-              className={selectedTags.includes(tag.text) ? 'selected' : ''}
-              style={{ backgroundColor: tag.color }}
-            >
-              {tag.text}
-            </Hashtags>
+            key={index}
+            className={selectedTags.includes(tag.text) ? 'selected' : ''}
+            style={{ backgroundColor: tag.color }}
+            onClick={() => handleTagClick(tag)} // Add this line
+          >
+            {tag.text}
+          </Hashtags>
           ))}
         </TagsRow>
       </HashtagContainer>

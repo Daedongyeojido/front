@@ -111,7 +111,7 @@ function Mypage() {
       <ContentContainer>
         <UserInfo>
           <div className='name'>
-            {loading ? 'Loading...' : userInfo.nickname ? `${userInfo.nickname}님 안녕하세요!` : 'MyUser'}
+            {loading ? 'Loading...' : userInfo.nickname ? `"${userInfo.nickname}"님 안녕하세요!` : 'MyUser'}
           </div>
           <div className='userSetting'>
             <div className='userEmail1'>이메일</div>
