@@ -142,10 +142,10 @@ function Home() {
         });
       } else {
         setEndPoint({
-          name: selectedPlace.address_name,
+          name: selectedPlace.place_name,
           x: selectedPlace.x,
           y: selectedPlace.y,
-          address: selectedPlace.place_name
+          address: selectedPlace.address_name 
         });
       }
       setShowModal(false);
@@ -194,10 +194,12 @@ function Home() {
         <LocationInputs
           startPoint={startPoint}
           endPoint={endPoint}
+          avoidPlaces={avoidCategories}
           handleInputClick={handleInputClick}
           handleGo={handleGo}
           handleFilterModal={handleFilterModal}
         />
+
         <RankContainer>
             <h2>추천 장소 만족도 순위</h2>
             <HandImg src={Hand}></HandImg>

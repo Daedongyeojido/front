@@ -13,7 +13,7 @@ const Modal = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.2); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,6 +30,7 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 1001;
+  border: 1px solid #B9D673;
   border-radius: 90px;
   scroll-behavior: auto;
   cursor: default;
@@ -93,15 +94,13 @@ const FilterModal = ({ avoidCategories ={} , setAvoidCategories , onClose }) => 
       <ModalContent onClick={e => e.stopPropagation()}>
         <h2>장소</h2>
         <TitleBar
-          width='100%'
           height='3px'
-          backgroundColor='#B9D673'>
+          border='1.5px solid #B9D673'>
         </TitleBar>
         {Object.keys(categories).map((category) => (
           <div key={category}>
             <h3>{category}</h3>
             {categories[category].map((item) => (
-
               <CategoryButton
                 key={item}
                 selected={avoidCategories[category] && avoidCategories[category].includes(item)}

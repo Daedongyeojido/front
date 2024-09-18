@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import styled from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
 import Modal from './modal';
 import PathPage from './paths';
+import { useRecoilValue } from 'recoil';
+import { RouteDataState } from '../../../recoils/Location';
+import { showMyRoute } from '../../../apis/showMyRoute';
+import { showDetailRoute } from '../../../apis/showDetailRoute';
 
 const HashtagContainer = styled.div`
   display: flex;
@@ -142,6 +146,31 @@ function MyPathPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [dotColors, setDotColors] = useState([]);
+  const [routes, setRoutes] = useState([]); // API에서 가져온 경로 데이터를 저장할 state
+  const [selectedRoute, setSelectedRoute] = useState(null); // 선택된 경로 세부 정보 상태
+  const [selectedRouteId, setSelectedRouteId] = useState(null); // 선택된 경로의 ID
+
+  useEffect(() => {
+    const handleShowRoute = async () => {
+      try {
+          const data = await showMyRoute();
+          if(data.routes && data.routes.length > 0 ){
+            console.log('Received data:', data); // 응답 데이터 확인
+            setRoutes(data.routes);
+          }
+      } catch (error) {
+        console.error("내 경로 정보 연동안되서 화면에 표시못함", error.message);
+      }
+    };
+    handleShowRoute();
+  }, []);
+
+    // 경로 클릭 시 세부 정보 불러오기
+    const handleRouteClick = (route_id) => {
+      setSelectedRouteId(route_id);
+      setIsModalOpen(true);
+    };
+  
 
   const tags = [
     { text: '#차분힐링', color: '#FDA043' },
@@ -151,6 +180,7 @@ function MyPathPage() {
     { text: '#에너지넘치는', color: '#FF9FA5' }
   ];
 
+  
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag.text) ? prevTags.filter((t) => t !== tag.text) : [...prevTags, tag.text]
@@ -165,6 +195,7 @@ function MyPathPage() {
       }
       return Array.from(newColors);
     });
+    
 
     setIsModalOpen(false); // Close the modal
   };
@@ -180,7 +211,7 @@ function MyPathPage() {
 
   return (
     <PageContainer>
-      <AppBar title="마이페이지" />
+      <AppBar title="나의 경로 " />
       <HashtagContainer>
         <TagsRow>
           {tags.slice(0, 3).map((tag, index) => (
@@ -207,47 +238,22 @@ function MyPathPage() {
       </HashtagContainer>
       <ContentContainer>
         <DateLabel>Date</DateLabel>
-        <MypathContainer onClick={handleDateClick}>
-          <DepartandArrival>
-            <DotsContainer>
-              {dotColors.map((color, index) => (
-                <Dot key={index} color={color} onClick={(event) => handleDotClick(event, color)} />
-              ))}
-            </DotsContainer>
-            <Depart>출발  | </Depart>
-            <Arrival>도착 | </Arrival>
-          </DepartandArrival>
-        </MypathContainer>
-        <MypathContainerTwo onClick={handleDateClick}>
-          <DepartandArrival>
-          </DepartandArrival>
-        </MypathContainerTwo>
-        <MypathContainerThree onClick={handleDateClick}>
-          <DepartandArrival>
-            <DotsContainer>
-              {dotColors.map((color, index) => (
-                <Dot key={index} color={color} onClick={(event) => handleDotClick(event, color)} />
-              ))}
-            </DotsContainer>
-            <Depart>출발  | </Depart>
-            <Arrival>도착 | </Arrival>
-          </DepartandArrival>
-        </MypathContainerThree>
+         {/* 불러온 경로들을 화면에 표시 */}
+         { routes > 0 ? ( 
+            routes.map((route) => (
+            <>
+              <MypathContainer onClick={() => handleRouteClick(route.route_id)} key={route.route_id}>
+              <DepartandArrival>
+                <Depart>출발  | {route.start_point} </Depart>
+                <Arrival>도착 | {route.end_point}</Arrival>
+              </DepartandArrival>
+            </MypathContainer>
+            </>
+         ))
+        ) :(
+          <div>'정보가 없습니다.'</div>
+        )}
       </ContentContainer>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <PathPage
-          onTagColorChange={(color) => setDotColors((prevColors) => {
-            const newColors = new Set(prevColors);
-            newColors.add(color);
-            if (newColors.size > 5) {
-              const colorsArray = Array.from(newColors);
-              newColors.delete(colorsArray[0]);
-            }
-            return Array.from(newColors);
-          })}
-          onCloseModal={() => setIsModalOpen(false)}
-        />
-      </Modal>
     </PageContainer>
   );
 }

@@ -46,7 +46,7 @@ author.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const { data } = await axios.post('https://jykim1428.pythonanywhere.com/token/refresh/', { 
+          const { data } = await axios.post('https://jykim1428.pythonanywhere.com/users/api/token/refresh/', { 
             refresh: refreshToken 
           });
 
