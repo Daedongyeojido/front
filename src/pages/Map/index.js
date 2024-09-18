@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { RouteDataState } from '../../recoils/Location'
 import styled from "styled-components";
 import { PageContainer, ContentContainer } from '../../components/Layout';
 import AppBar from '../../components/AppBar';
@@ -11,6 +13,7 @@ import EndPoint from '../../Image/endpoint.png'
 import { routeRecommendation } from '../../apis/Recommendation'
 import DeletedButton from '../../Image/DeleteButton.png'
 import SaveRouteModal from '../../components/SaveRouteModal';
+
 
 const RouteInfoContainer = styled.div`
   position: relative;
@@ -104,28 +107,35 @@ function Map() {
   const mapRef = useRef(null);
   const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
   const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
-  const [routeData, setRouteData] = useState({places :[], map_pins: []});
+  const [routeData, setRouteData] = useRecoilState(RouteDataState); 
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const handleGetRoute = async () => {
       try {
         if (startPoint && endPoint) {
-          console.log(location.state);
+          // console.log(location.state);
           
-          console.log('s', startPoint);
-          console.log('e', endPoint);
-
+          // console.log('s', startPoint);
+          // console.log('e', endPoint);
 
           const data = await routeRecommendation(startPoint, endPoint, ['찻집']);
 
           // console.log('Received data:', data); // 응답 데이터 확인
   
           if (data.route && data.route.places.length > 0) {
-            setRouteData(data.route); // routeData에 저장
+            setRouteData({
+              ...data.route,
+              startPoint,
+              endPoint}); // routeData에 저장
           } else {
             console.warn('No route data available');
-            setRouteData({ places: [], map_pins: [] }); // 빈 데이터로 설정
+            setRouteData({
+              places: [],
+              map_pins: [],
+              startPoint,
+              endPoint,
+            }); // 빈 데이터로 설정
           }
         }
       } catch (error) {
@@ -133,9 +143,7 @@ function Map() {
       }
     };
     handleGetRoute();
-  }, [startPoint, endPoint]);
-
-  
+  }, [startPoint, endPoint, setRouteData]);
 
   useEffect(() => {
     //지도 객체 선언하기 전에 디버깅을 해서 div 스타일이 잘 들어가 있는지 확인 
@@ -245,7 +253,6 @@ function Map() {
   }, [startPoint, endPoint]);
   
   const handleRouteDelete = async (id) => {
-
       setRouteData(prevRouteData => {
         const map_pins = routeData.map_pins; //배열
         let newRoute = map_pins.filter(pin => pin.id !== id) 
@@ -271,6 +278,7 @@ function Map() {
         <RouteInfoContainer>
           <RouteInfoBox>
             {startPoint && endPoint ? (
+
               <RouteText>
                 <RouteLine>{startPoint.name}부터</RouteLine>
                 <RouteLine>{endPoint.name}까지</RouteLine>

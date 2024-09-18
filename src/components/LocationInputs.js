@@ -23,7 +23,7 @@ const Container = styled.div`
 const InputContainer = styled.div`
   width: 85%;
   height: 50px;
-  background-color: #FBFBFB;
+  background-color: ${props => props.backgroundColor || '#FBFBFB'};
   border-radius: 30px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -52,7 +52,7 @@ const InputBox = styled.input`
   }
 `;
 
-const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterModal }) => {
+const LocationInputs = ({ startPoint, endPoint, avoidPlaces, handleInputClick, handleFilterModal }) => {
   const navigate = useNavigate();
 
   const handleGo = () => {
@@ -60,10 +60,12 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
       navigate('/map', { 
         state: { 
           startPoint,
-          endPoint
+          endPoint,
+          avoidPlaces
         } 
       });
     }
+
   };
 
   return (
@@ -87,19 +89,15 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
         />
       </InputContainer>
 
-      <Button
-        fontSize='15px'
-        fontWeight='300'
-        height= '50px'
-        width= '85%'
-        backgroundColor='#eeeeee'
-        borderRadius='25px'
-        customStyle='box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25)' //customstyle로 쓰라고 warning뜸
-        color='black'
-        onClick={handleFilterModal}
-        >
-          추천받고 싶은 않은 장소가 있어요!
-      </Button>
+      <InputContainer backgroundColor='#EEEEEE'>
+        <Icon src={Arrival} alt="도착" />
+        <InputBox
+          placeholder="추천받고 싶은 않은 장소가 있어요! (선택)"
+          value={avoidPlaces.item}
+          onClick={handleFilterModal}
+          readOnly
+        />
+      </InputContainer>
 
       <Button
         fontSize="20px"
@@ -109,6 +107,7 @@ const LocationInputs = ({ startPoint, endPoint, handleInputClick, handleFilterMo
         backgroundColor={startPoint.name && endPoint.name ? "#B9D673" : "#CCCCCC"}
         onClick={handleGo}
         disabled={!startPoint.name || !endPoint.name}
+        
       >
         GO
       </Button>

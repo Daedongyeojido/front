@@ -17,6 +17,7 @@ const LogoText = styled.div`
   font-size: 45px;
   font-weight: bold;
   margin-right: 20px;
+  color: #354806;
 `;
 
 const IconContainer = styled.div`

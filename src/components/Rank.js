@@ -37,7 +37,6 @@ function Rank() {
         const PlaceRank = async () => {
             try {
                 const response = await locationRank();
-                console.log(response);
                 if (response && response.top_recommended_places) {
                     setRank(response.top_recommended_places);
                 } else {
