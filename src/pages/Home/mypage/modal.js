@@ -1,32 +1,41 @@
-import React from 'react';
+import React, { useDebugValue, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { RouteDataState } from '../../../recoils/Location';
+import {showDetailRoute} from '../../../apis/showDetailRoute';
 
 const ModalWhole = styled.div`
-  position: fixed; /* 모달을 화면 전체에 고정 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-  z-index: 2000; /* 모달이 앱바 위에 표시되도록 설정 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: auto; /* 내용이 넘칠 경우 스크롤 추가 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer; 
 `;
 
 const ModalContent = styled.div`
-  background-color: #fff;
-  padding: 20pxs 30px;
+  background-color: #E9F0D8;
+  padding: 20px 60px;
+  width: 70%;
+  max-width: 400px;
+  height: 90%;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 2010; /* 모달 내용이 모달 배경 위에 위치하도록 설정 */
-  max-width: 90%; /* 최대 너비 설정 */
-  max-height: 80%; /* 최대 높이 설정 */
-  overflow: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-  width: 35%; /* Ensure it takes full width within its container */
-  box-sizing: border-box; /* Include padding in the element's total width and height */
+  scroll-behavior: auto;
+  cursor: default;
+  overflow-y: auto; 
+
+  &::-webkit-scrollbar {
+    display: none; 
+  }
 `;
 
 const ModalClose = styled.span`
@@ -39,6 +48,29 @@ const ModalClose = styled.span`
 `;
 
 const Modal = ({ isOpen, onClose, children }) => {
+
+  const { routeData} = useRecoilValue(RouteDataState); // Recoil에서 전역 상태 가져오기
+  console.log(routeData);
+  
+  useEffect(() => {
+    const handleShowRoute = async () => {
+      try {
+          const data = await showDetailRoute();
+
+          console.log('Received dsata:', data); // 응답 데이터 확인
+  
+          if (data.route && data.route.places.length > 0) {
+
+          } else {
+            console.warn('No route data available');
+          }
+        
+      } catch (error) {
+        console.error("Error fetching route:", error.message);
+      }
+    };
+    handleShowRoute();
+  }, []);
   if (!isOpen) return null;
 
   return (

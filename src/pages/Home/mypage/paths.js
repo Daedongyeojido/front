@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { PageContainer, ContentContainer } from '../../../components/Layout';
-import AppBar from '../../../components/AppBar';
 import arrowImage from '../../../pages/Home/mypage/Arrow.png';
 import heartImage from '../../../pages/Home/mypage/Heart.png';
 import { fetchHashtagList } from '../../../apis/hashtag'; 
@@ -12,17 +10,26 @@ const bounce = keyframes`
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-3px);
   }
 `;
 
+const PathContainer = styled.div`
+  width: 100%;
+  background-color: #FFF;
+  height: 100px;
+  box-shadow: 0 0 3px rgba(10, 10, 10, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+`
 const PathsTagContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 10px 10px 10px;
-  margin-top: -30px;
+  margin-top: 2px;
+  margin-bottom: 10px;
   position: relative;
   z-index: 1;
 `;
@@ -30,9 +37,7 @@ const PathsTagContainer = styled.div`
 const PathsTagRow = styled.div`
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 32px;
-  width: 100%;
+  gap: 10px;
   cursor: pointer;
   justify-content: center;
   align-items: center;
@@ -42,7 +47,7 @@ const TagsLarge = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 20px;
+  gap: 10px;
   margin-top: 10px;
   width: 100%;
   justify-content: center;
@@ -51,8 +56,8 @@ const TagsLarge = styled.div`
 
 const PathsTag = styled.button`
   display: inline-block;
-  padding: 8px 10px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 20px;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
@@ -71,17 +76,18 @@ const Route = styled.div`
 `;
 
 const RouteButton = styled.button`
-  background-color: #FFFAF3;
-  border: 2px solid #ddd;
-  border-radius: 20px;
-  padding: 5px;
-  margin: 10px 0;
-  width: 80%;
-  height: 70px;
+  border-radius: 10px;
   text-align: center;
   position: relative;
   box-sizing: border-box;
-  cursor: pointer;
+  border: none;
+  width: 100%;
+  background-color: #FFF;
+  height: 100px;
+  box-shadow: 0 0 3px rgba(10, 10, 10, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SmallCircleButton = styled.button`
@@ -91,8 +97,8 @@ const SmallCircleButton = styled.button`
   background-color: #575757;
   border: none;
   position: absolute;
-  top: 5px;
-  left: 15px;
+  top: 12px;
+  left: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,24 +116,28 @@ const OnStart = styled.p`
   font-weight: bolder;
   position: absolute;
   left: 45px;
-  top: -8%;
+  top: 1%;
   z-index: 1;
+  margin-left: 10px;
 `;
 
 const Via = styled.p`
   font-weight: bolder;
   position: absolute;
   left: 45px;
-  top: -8%;
+  top: 1%;
   z-index: 1;
+  margin-left: 10px;
+
 `;
 
 const OffStart = styled.p`
   font-weight: bolder;
   position: absolute;
   left: 45px;
-  top: -8%;
+  top: 1%;
   z-index: 1;
+  margin-left: 10px;
 `;
 
 const Address = styled.p`
@@ -150,7 +160,7 @@ const HeartIcon = styled.img`
   height: 20px;
   cursor: pointer;
   position: absolute;
-  right: -30px;
+  right: -38px;
   top: 50%;
   transform: translateY(-50%);
   transition: filter 0.3s, transform 0.3s;
@@ -163,6 +173,39 @@ const HeartIcon = styled.img`
   }
 `;
 
+const WaypointList = styled.div`
+  margin-top: 20px;
+`;
+
+const StopOverItem = styled.div`
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const Circle = styled.div`
+    width: 8%;
+    height: 23px;
+    background-color: #575757;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    margin: 3px 5px 0px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+`
+const WaypointInfo = styled.div`
+  width: 100%;
+  flex-grow: 1; /* 텍스트가 남은 공간을 차지하도록 설정 */
+  padding-left: 10px; /* Circle과 간격을 조금 더 줌 */
+`;
+
 const ModalWhole = styled.div`
 `;
 
@@ -171,6 +214,8 @@ const ModalContent = styled.div`
 
 const ModalClose = styled.span`
 `;
+
+
 
 const PathPage = ({ onTagColorChange, onCloseModal }) => {
   const [clickedStars, setClickedStars] = useState([false, false, false]);
@@ -236,9 +281,7 @@ const PathPage = ({ onTagColorChange, onCloseModal }) => {
   const hashtagsRow2 = hashtag.slice(3);
 
   return (
-    <PageContainer>
-      <AppBar title='내 경로 모아보기' />
-      <ContentContainer>
+    <>
         <PathsTagContainer>
           <PathsTagRow>
             {hashtagsRow1.map((tag, index) => (
@@ -265,25 +308,24 @@ const PathPage = ({ onTagColorChange, onCloseModal }) => {
         </PathsTagContainer>
 
         <Route>
+        <PathContainer>
           <Start>
             <OnStart>출발지</OnStart>
             <Address>출발지 주소 / 설명 / 이름</Address>
             <SmallCircleButton>1</SmallCircleButton>
           </Start>
+          </PathContainer>
           <ArrowIcon src={arrowImage} alt='arrow' />
 
-          <ViaPoint>
-            <Via>경유지 1</Via>
-            <Address>경유지 주소 / 설명 / 이름</Address>
-            <HeartIcon
-              src={heartImage}
-              alt='Star'
-              className={clickedStars[0] ? 'clicked' : ''}
-              onClick={() => handleStarClick(0)}
-            />
-            <SmallCircleButton>2</SmallCircleButton>
-          </ViaPoint>
+          <PathContainer>
+          <Start>
+            <Via>경유지</Via>
+            <Address>출발지 주소 / 설명 / 이름</Address>
+            <Address>출발지 주소 / 설명 / 이름</Address>
 
+            <SmallCircleButton>1</SmallCircleButton>
+          </Start>
+          </PathContainer>
           <ArrowIcon src={arrowImage} alt='arrow' />
 
           <ViaPoint>
@@ -320,8 +362,7 @@ const PathPage = ({ onTagColorChange, onCloseModal }) => {
             <SmallCircleButton>5</SmallCircleButton>
           </Destination>
         </Route>
-      </ContentContainer>
-    </PageContainer>
+    </>
   );
 };
 

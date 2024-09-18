@@ -33,20 +33,8 @@ export const login = async (email, password) => {
         console.error('Signup error:', error); // 디버깅을 위해 추가
 
         if (error.response && error.response.data) {
-            const data = error.response.data;
-            console.log('Error response data:', data); // 실제 응답 데이터를 확인하기 위해 추가
-
-            // 서버에서 반환된 에러 메시지를 처리
-            if (data.nickname) {
-                throw { nickname: data.nickname[0] };
-            }
-            if (data.email) {
-                throw { email: data.email };
-            }
-            if (data.errorList) {
-                throw { general: data.errorList.join('\n') };
-            }
+            throw error.response.data;
         }
-        throw { general: '회원가입 중 오류가 발생했습니다.' };
+        throw error;
     }
 };

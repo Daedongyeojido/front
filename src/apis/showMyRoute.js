@@ -1,49 +1,18 @@
 import instance from "./instance";
-import {useEffect, useState} from 'react';
 
-//내 경로 모아보기 
-export const myRoutes = async () => {
-    try{
-        const response = await instance.get('/route/routes/')
-        return response.data;
-    } catch(error) {
-        if (error.response && error.response.data) {
-            throw error.response.data;
-          }
-          throw error;
+export const showMyRoute = async () => {
+    try {
+      const response = await instance.get('/route/routes/');
+      return response.data;
+      
+    } catch (error) {
+      console.error('내 경로 불러오기 error:', error); 
+
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        console.log('Error response data:', error);
+      }
+      throw { general: '오류가 발생했습니다.' };
     }
-}
-
-function MyRoutesApi() {
-    const [routes, setRoutes] = useState([]);
-    const [url, setUrl] = useState('http://localhost:3001/routes');
-
-    useEffect(()=> {
-        fetch(url)
-        .then(response => {
-            if(!response.ok){
-                throw new Error('network error');
-            }
-            return response.json()
-        })
-        .then(json => setRoutes(json))
-        .catch(error => console.error('error: bringing data error',
-            error));
-    })
-
-  return (
-    <div>
-      {routes.map(routes => {
-        <>
-            <h1>{routes.route_id}</h1>
-            <h1>{routes.start_point}</h1>
-            <h1>{routes.end_point}</h1>
-            <h1>{routes.hashtags}</h1>
-            <h1>{routes.date}</h1>
-        </>
-      })}
-    </div>
-  )
-}
-
-export default MyRoutesApi;
+    
+  };
