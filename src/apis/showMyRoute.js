@@ -3,7 +3,6 @@ import instance from "./instance";
 export const showMyRoute = async () => {
     try {
       const response = await instance.get('/users/routes');
-      console.log('res',response);
       
       return response.data;
       

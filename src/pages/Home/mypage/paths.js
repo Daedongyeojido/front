@@ -128,7 +128,6 @@ const Via = styled.p`
   top: 1%;
   z-index: 1;
   margin-left: 10px;
-
 `;
 
 const OffStart = styled.p`
@@ -214,7 +213,6 @@ const ModalContent = styled.div`
 
 const ModalClose = styled.span`
 `;
-
 
 
 const PathPage = ({ onTagColorChange, onCloseModal }) => {

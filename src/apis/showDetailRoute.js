@@ -9,9 +9,8 @@ export const showDetailRoute = async (route_id) => {
   }
     try {
         const response = await instance.get(`/users/routes/${route_id}`);
-        console.log('내 경로 불러오기 성공 :', response.data);
         return response.data;
     } catch (error) {
-    console.error(' 내 경로 불러오기 실패:', error);
+    console.error('세부 경로 불러오기 실패:', error);
   }
 }
