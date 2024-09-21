@@ -14,8 +14,9 @@ export const routeRecommendation = async (startPoint, endPoint, avoidCategories)
             endpoint_address: endPoint.address,
             endpoint_x: endPoint.y,
             endpoint_y: endPoint.x,
-            avoid_categories: avoidCategories
+            avoid_categories: avoidCategories //배열
         });
+        console.log(response.data)
 
         return response.data;
     } catch (error) {

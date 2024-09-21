@@ -2,7 +2,7 @@ import instance from './instance';
 
 export const Logout = async () => {
   try {
-    const refreshToken = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('refresh');
     if (!refreshToken) {
       throw new Error('No refresh token available.');
     }
@@ -26,8 +26,8 @@ export const Logout = async () => {
     }
 
     // Clean up local storage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
 
     return response.data;
   } catch (error) {

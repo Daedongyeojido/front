@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { PageContainer, ContentContainer } from '../../../components/Layout';
 import AppBar from '../../../components/AppBar';
@@ -17,7 +17,7 @@ const HashtagContainer = styled.div`
   margin-top: 10px;
 `;
 
-const TagsContainer =styled.div`
+const TagsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,21 +96,36 @@ const Dot = styled.div`
   cursor: pointer;
 `;
 
+const Warning = styled.div`
+  align-content: center;
+  width: 100%;
+  height: 90px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-align: center;
+`
+
 function MyPathPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [dotColors, setDotColors] = useState([]);
   const [routes, setRoutes] = useState([]); // API에서 가져온 경로 데이터를 저장할 state
   const [routeId, setRouteId] = useState(null)
+  const [placeId, setPlaceId] = useState(null)
 
   useEffect(() => {
     const handleShowRoute = async () => {
       try {
-          const data = await showMyRoute();
+        const data = await showMyRoute();
+        // console.log(data[0].places[0].place_id);
 
-          if (data && data.length > 0 ){
-            setRoutes(data);            
-          }
+        if (data && data.length > 0) {
+          setRoutes(data);
+        }
       } catch (error) {
         console.error("내 경로 정보 연동안되서 화면에 표시못함", error.message);
       }
@@ -127,7 +142,7 @@ function MyPathPage() {
     { text: '#에너지넘치는', color: '#FF9FA5' }
   ];
 
-  
+
   const handleTagClick = (tag) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag.text) ? prevTags.filter((t) => t !== tag.text) : [...prevTags, tag.text]
@@ -142,7 +157,7 @@ function MyPathPage() {
       }
       return Array.from(newColors);
     });
-    
+
 
     setIsModalOpen(false); // Close the modal
   };
@@ -153,63 +168,67 @@ function MyPathPage() {
   };
 
   // 경로 클릭 시 세부 정보 불러오기
-      const handleRouteClick = (routeId) => {
-        setRouteId(routeId)
-        setIsModalOpen(true)
-      };
+  const handleRouteClick = (routeId, placeId) => {
+    setRouteId(routeId)
+    setPlaceId(placeId)
+    setIsModalOpen(true)
+  };
 
   return (
     <PageContainer>
       <AppBar title="나의 경로 " />
       <ContentContainer>
-      <HashtagContainer>
-        <TagsContainer>
-          <RowContainer>
-          {tags.slice(0, 3).map((tag, index) => (
-            <Hashtags
-              key={index}
-              className={selectedTags.includes(tag.text) ? 'selected' : ''}
-              style={{ backgroundColor: tag.color }}
-            >
-              {tag.text}
-            </Hashtags>
-          ))}
-          </RowContainer>
-        <RowContainer>
-          {tags.slice(3).map((tag, index) => (
-            <Hashtags
-              key={index}
-              className={selectedTags.includes(tag.text) ? 'selected' : ''}
-              style={{ backgroundColor: tag.color , width:'30%'}}
-            >
-              {tag.text}
-            </Hashtags>
-          ))}
-        </RowContainer>
-        </TagsContainer>
+        <HashtagContainer>
+          <TagsContainer>
+            <RowContainer>
+              {tags.slice(0, 3).map((tag, index) => (
+                <Hashtags
+                  key={index}
+                  className={selectedTags.includes(tag.text) ? 'selected' : ''}
+                  style={{ backgroundColor: tag.color }}
+                >
+                  {tag.text}
+                </Hashtags>
+              ))}
+            </RowContainer>
+            <RowContainer>
+              {tags.slice(3).map((tag, index) => (
+                <Hashtags
+                  key={index}
+                  className={selectedTags.includes(tag.text) ? 'selected' : ''}
+                  style={{ backgroundColor: tag.color, width: '30%' }}
+                >
+                  {tag.text}
+                </Hashtags>
+              ))}
+            </RowContainer>
+          </TagsContainer>
 
-      </HashtagContainer>
-         {/* 불러온 경로들을 화면에 표시 */}
-         { routes?.length > 0 ? ( 
-            routes
-            .filter((_, index) => index % 2 === 0 )
-            .map((route) => {   
+        </HashtagContainer>
+        {/* 불러온 경로들을 화면에 표시 */}
+        {routes?.length > 0 ? (
+          routes
+            .filter((_, index) => index % 2 === 0)
+            .map((route) => {
+              const place_id = route.places.map(place => place.place_id);
+
               return (
-              <MypathContainer onClick={() => handleRouteClick(route.route_id)} key={route.route_id}>
-                <Depart> 출발  | {route.startpoint_name} </Depart>
-                <Arrival>도착 | {route.endpoint_name}</Arrival>
-            </MypathContainer>
+                <MypathContainer onClick={() => handleRouteClick(route.route_id, place_id)} key={route.route_id}>
+                  <Depart> 출발  | {route.startpoint_name} </Depart>
+                  <Arrival>도착 | {route.endpoint_name}</Arrival>
+                </MypathContainer>
               );
             })
         ) : (
-          <div>정보가 없습니다.</div>
+          <Warning>아직 저장한 경로가 없습니다!</Warning>
         )}
       </ContentContainer>
-      {isModalOpen && (        
+      {isModalOpen && (
         <Modal
           routeId={routeId}
+          placeId={placeId}
           isOpen={isModalOpen}
-          onClose={()=>setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)}
         />
       )}
     </PageContainer>

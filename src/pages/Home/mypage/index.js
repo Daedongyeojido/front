@@ -66,6 +66,7 @@ function Mypage() {
       setLoading(true);
       try {
         const data = await UserMail();
+
         setUserInfo({
           nickname: data.nickname || 'MyUser',
           email: data.email || 'No Email'
@@ -92,8 +93,8 @@ function Mypage() {
       await Logout();
   
       // Clear tokens from local storage after successful logout
-      localStorage.removeItem('token');
-      localStorage.removeItem('user_id');
+      localStorage.removeItem('refresh');
+      localStorage.removeItem('access');
   
       // Redirect to the sign-in page
       navigate('/signin');

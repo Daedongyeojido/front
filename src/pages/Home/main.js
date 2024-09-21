@@ -115,7 +115,7 @@ function Home() {
 
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
-    console.log('place', place);
+    // console.log('place', place);
     
     const moveLatLng = new kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(moveLatLng);
@@ -131,7 +131,7 @@ function Home() {
 
   const handleConfirmSelection = () => {
     if (selectedPlace) {
-      console.log('selectedPalce',selectedPlace);
+      // console.log('selectedPalce',selectedPlace);
       
       if (isStartSearch) {
         setStartPoint({

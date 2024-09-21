@@ -13,6 +13,9 @@ import EndPoint from '../../Image/endpoint.png'
 import { routeRecommendation } from '../../apis/Recommendation'
 import DeletedButton from '../../Image/DeleteButton.png'
 import SaveRouteModal from '../../components/SaveRouteModal';
+import { DeleteStopOver } from '../../apis/DeleteStopOver';
+import instance from '../../apis/instance';
+import { showMyRoute } from '../../apis/showMyRoute';
 
 
 const RouteInfoContainer = styled.div`
@@ -54,7 +57,7 @@ const Text = styled.p`
   font-weight: bold;
   font-size: 17px;
 `;
- 
+
 const MapContainer = styled.div`
   width: 100%;
   height: 400px;
@@ -76,17 +79,17 @@ const StopOverItem = styled.div`
 `;
 
 const Circle = styled.div`
-    width: 8%;
-    height: 23px;
-    background-color: #575757;
-    border-radius: 50%;
-    color: white;
-    font-size: 20px;
-    margin: 3px 5px 0px 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
+  width: 8%;
+  height: 23px;
+  background-color: #575757;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  margin: 3px 5px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 `
 const WaypointInfo = styled.div`
   width: 100%;
@@ -107,7 +110,7 @@ function Map() {
   const mapRef = useRef(null);
   const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
   const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
-  const [routeData, setRouteData] = useRecoilState(RouteDataState); 
+  const [routeData, setRouteData] = useRecoilState(RouteDataState);
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -115,19 +118,20 @@ function Map() {
       try {
         if (startPoint && endPoint) {
           // console.log(location.state);
-          
+
           // console.log('s', startPoint);
           // console.log('e', endPoint);
 
           const data = await routeRecommendation(startPoint, endPoint, ['찻집']);
 
           // console.log('Received data:', data); // 응답 데이터 확인
-  
+
           if (data.route && data.route.places.length > 0) {
             setRouteData({
               ...data.route,
               startPoint,
-              endPoint}); // routeData에 저장
+              endPoint
+            }); // routeData에 저장
           } else {
             console.warn('No route data available');
             setRouteData({
@@ -149,31 +153,31 @@ function Map() {
     //지도 객체 선언하기 전에 디버깅을 해서 div 스타일이 잘 들어가 있는지 확인 
     const container = document.getElementById("map");
     // console.log("MapContainer styles before init:", window.getComputedStyle(container));
-    
-    if(container) {
+
+    if (container) {
       const script = document.createElement("script");
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=02925b5b6daafef564e5550b95696753&libraries=services&autoload=false`;
       script.async = true;
-      
+
       script.onload = () => {
         console.log("카카오맵 스크립트 로드 완료");
         kakao.maps.load(() => {
           console.log("카카오맵 API 로드 완료"); // 디버그 메시지
-        
+
           const options = {
             center: new kakao.maps.LatLng(33.450701, 126.570667),
             level: 3,
           };
           const map = new kakao.maps.Map(container, options);
           mapRef.current = map;
-        
+
           setTimeout(() => {
             map.relayout();  // 지도 레이아웃 재조정 -> 지도가 보이는 시점에 relayout()을 호출
           }, 500);
-        
+
           if (startPoint && endPoint) {
             const bounds = new kakao.maps.LatLngBounds();
-          
+
             const startMarkerImage = new kakao.maps.MarkerImage(
               StartPoint,
               new kakao.maps.Size(20, 20),
@@ -182,7 +186,7 @@ function Map() {
                 alt: "출발지: 보라색 마커"
               }
             );
-          
+
             // 출발지 마커와 인포윈도우
             const startMarker = new kakao.maps.Marker({
               position: new kakao.maps.LatLng(startPoint.y, startPoint.x),
@@ -190,11 +194,11 @@ function Map() {
               map: map,
             });
             bounds.extend(new kakao.maps.LatLng(startPoint.y, startPoint.x));
-          
+
             const startInfowindow = new kakao.maps.InfoWindow({
               content: `<div style="padding:5px;">출발지: ${startPoint.name}</div>`
             });
-          
+
             const endMarkerImage = new kakao.maps.MarkerImage(
               EndPoint,
               new kakao.maps.Size(20, 20),
@@ -203,7 +207,7 @@ function Map() {
                 alt: "도착지: 초록색 마커"
               }
             );
-          
+
             // 도착지 마커와 인포윈도우
             const endMarker = new kakao.maps.Marker({
               position: new kakao.maps.LatLng(endPoint.y, endPoint.x),
@@ -211,12 +215,12 @@ function Map() {
               map: map,
             });
             bounds.extend(new kakao.maps.LatLng(endPoint.y, endPoint.x));
-          
+
             const endInfowindow = new kakao.maps.InfoWindow({
               content: `<div style="padding:5px;">도착지: ${endPoint.name}</div>`
             });
-          
-          
+
+
             // 마커 클릭 이벤트, 다른 마커 클릭하면 인포윈도우 닫힘
             kakao.maps.event.addListener(startMarker, 'click', function () {
               if (startInfowindowOpen) {
@@ -228,7 +232,7 @@ function Map() {
               endInfowindow.close();
               setEndInfowindowOpen(false);
             });
-          
+
             kakao.maps.event.addListener(endMarker, 'click', function () {
               if (endInfowindowOpen) {
                 endInfowindow.close();
@@ -243,32 +247,76 @@ function Map() {
           }
         });
       };
-    
+
       document.head.appendChild(script);
-    
+
       return () => {
         document.head.removeChild(script);
       };
     }
   }, [startPoint, endPoint]);
-  
-  const handleRouteDelete = async (id) => {
-      setRouteData(prevRouteData => {
-        const map_pins = routeData.map_pins; //배열
-        let newRoute = map_pins.filter(pin => pin.id !== id) 
-        let newPlaces = routeData.places.filter((_, index)=> routeData.map_pins[index].id !== id);
-  
-        return {
-          ...prevRouteData, 
-          map_pins: map_pins,
-          places: newPlaces,
-        };
-      })
-    }
 
-    const handleSaveRoute = () => { 
-      setModalOpen(true)
+//place_id랑 route_id 가져오는 거 분리시키기
+  const getIdInfo = async () => {
+    try {
+      //route_id랑 place_id받아오기
+      const getIdData = await showMyRoute(); 
+      
+      //route_id랑 place_id가 있으면
+      if (getIdData) {
+          //route_id get
+          getIdData.map((eachRoute) => {
+            const route_id = eachRoute.route_id;
+            console.log('route_id : ', route_id);
+
+          })
+
+          getIdData.places.map((eachPlace) => {
+            const place_id = eachPlace.place_id;
+            console.log('route_id : ', place_id);
+
+          })
+        } 
+
+
+      }catch (error) {
+      console.error('error', error.message)
     }
+    return {place_id, route_id}
+  } 
+
+  // 지금 api 연결안된 상테
+  // 해당 컴포넌트를 누르면 해당 경유지 장소의 route_id, place_id를 DeleteStopOver api에 담아서 넘기는건데
+  // 지금 recommendation api 응답에는 place_id와 route_id가 없다. 
+  // recommendation api가 호출되는 순간 데이터베이스에 place_id와 route_id가 포함된 경로 정보가 전부 저장된다. 
+  
+  // 그러니까 내 경로 모아보기(showMyRoute) api로 데이터베이스에 저장된 place_id와 route_id를 불러와서
+  // 이걸 place_id와 route_id만 뽑아내서 가공해서 DeleteStopOver api에 보내는 로직을 짜야한다. 
+  
+  const handleRouteDelete = async (id) => { 
+    // console.log(id);
+    
+    // const routeInfo = await getIdInfo();
+    // console.log('routeInfo' , routeInfo); 
+    // const updatedRoute = await DeleteStopOver(id, id);
+    // console.log(updatedRoute);
+    
+    setRouteData(prevRouteData => {
+      const map_pins = routeData.map_pins; //배열
+      let newRoute = map_pins.filter(pin => pin.id !== id) 
+      let newPlaces = routeData.places.filter((_, index)=> routeData.map_pins[index].id !== id);
+
+      return {
+        ...prevRouteData, 
+        map_pins: map_pins,
+        places: newPlaces,
+      };
+    })
+  }
+
+  const handleSaveRoute = () => {
+    setModalOpen(true)
+  }
 
   return (
     <PageContainer>
@@ -293,24 +341,24 @@ function Map() {
 
         {/* 경유지 정보 화면에 표시 */}
         <WaypointList>
-          {routeData?.places?.length > 0 ? (
+          {routeData?.places?.length > 0 ? (            
             routeData.places.map((place, index) => (
               <>
-              <StopOverItem key={place.place_name}>
-                <Circle>{index + 1}</Circle>
-                <WaypointInfo>
-                  <div>경유지 {index +1} | {place.place_name}</div>
-                  <div>주소  | {place.place_address}</div>
-                  <div>설명  | {place.subCategory}</div>
-                </WaypointInfo>
-                <Icon src={DeletedButton} 
-                  onClick={() => handleRouteDelete(routeData.map_pins[index].id)}/>
-              </StopOverItem>
+                <StopOverItem key={place.place_name}>
+                  <Circle>{index + 1}</Circle>
+                  <WaypointInfo>
+                    <div>경유지 {index + 1} | {place.place_name}</div>
+                    <div>주소  | {place.place_address}</div>
+                    <div>설명  | {place.subCategory}</div>
+                  </WaypointInfo>
+                  <Icon src={DeletedButton}
+                    onClick={() => handleRouteDelete(routeData.map_pins[index].id)} />
+                </StopOverItem>
               </>
             ))
           ) : (
             <div>경유지 정보가 없습니다.</div>  // 데이터가 없을 경우 표시할 메시지
-          )}                 
+          )}
         </WaypointList>
         <Button
           backgroundColor={({ theme }) => theme.mainColor}
@@ -325,9 +373,9 @@ function Map() {
           다른 경로 추천받기
           
         </Button> */}
-          {modalOpen && (
-            <SaveRouteModal setModalOpen={setModalOpen} />
-          )}
+        {modalOpen && (
+          <SaveRouteModal setModalOpen={setModalOpen} />
+        )}
       </ContentContainer>
     </PageContainer>
   );
