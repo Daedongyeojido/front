@@ -13,8 +13,6 @@ import EndPoint from '../../Image/endpoint.png'
 import { routeRecommendation } from '../../apis/Recommendation'
 import DeletedButton from '../../Image/DeleteButton.png'
 import SaveRouteModal from '../../components/SaveRouteModal';
-import { DeleteStopOver } from '../../apis/DeleteStopOver';
-import instance from '../../apis/instance';
 import { showMyRoute } from '../../apis/showMyRoute';
 
 
@@ -106,7 +104,7 @@ const Icon = styled.img`
 
 function Map() {
   const location = useLocation();
-  const { startPoint, endPoint } = location.state || {};
+  const { startPoint, endPoint , avoidCategories} = location.state || {};
   const mapRef = useRef(null);
   const [startInfowindowOpen, setStartInfowindowOpen] = useState(false);
   const [endInfowindowOpen, setEndInfowindowOpen] = useState(false);
@@ -116,15 +114,16 @@ function Map() {
   useEffect(() => {
     const handleGetRoute = async () => {
       try {
-        if (startPoint && endPoint) {
+        if (startPoint && endPoint && avoidCategories) {
+          
           // console.log(location.state);
 
           // console.log('s', startPoint);
           // console.log('e', endPoint);
 
-          const data = await routeRecommendation(startPoint, endPoint, ['찻집']);
+          const data = await routeRecommendation(startPoint, endPoint, avoidCategories);
 
-          // console.log('Received data:', data); // 응답 데이터 확인
+          console.log('Received data:', data); // 응답 데이터 확인
 
           if (data.route && data.route.places.length > 0) {
             setRouteData({

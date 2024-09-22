@@ -52,19 +52,21 @@ const InputBox = styled.input`
   }
 `;
 
-const LocationInputs = ({ startPoint, endPoint, avoidPlaces, handleInputClick, handleFilterModal }) => {
-  const navigate = useNavigate();
-
+const LocationInputs = ({ startPoint, endPoint, avoidCategories, handleInputClick, handleFilterModal }) => {
+  const navigate = useNavigate();  
+  
   const handleGo = () => {
-    if (startPoint.name && endPoint.name) {
+    if ((startPoint.name && endPoint.name) || avoidCategories) {      
       navigate('/map', { 
         state: { 
           startPoint,
           endPoint,
-          avoidPlaces
+          avoidCategories
         } 
       });
     }
+    console.log();
+    
 
   };
 
@@ -93,13 +95,13 @@ const LocationInputs = ({ startPoint, endPoint, avoidPlaces, handleInputClick, h
         <Icon src={Arrival} alt="도착" />
         <InputBox
           placeholder="추천받고 싶은 않은 장소가 있어요! (선택)"
-          value={avoidPlaces.item}
-          onClick={handleFilterModal}
+          value={avoidCategories}
+          onClick={()=>handleFilterModal(true)}
           readOnly
         />
       </InputContainer>
 
-      <Button
+      <Button 
         fontSize="20px"
         width="60%"
         height="49px"
@@ -107,7 +109,6 @@ const LocationInputs = ({ startPoint, endPoint, avoidPlaces, handleInputClick, h
         backgroundColor={startPoint.name && endPoint.name ? "#B9D673" : "#CCCCCC"}
         onClick={handleGo}
         disabled={!startPoint.name || !endPoint.name}
-        
       >
         GO
       </Button>

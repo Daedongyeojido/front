@@ -54,7 +54,7 @@ function Home() {
   const [isStartSearch, setIsStartSearch] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isSearched, setIsSearched] = useState(false);
-  const [avoidCategories, setAvoidCategories] = useState({}); 
+  const [avoidCategories, setAvoidCategories] = useState([]); 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const navigate = useNavigate();
@@ -152,7 +152,6 @@ function Home() {
       setIsSearched(false);
       setSelectedPlace(null);
     }
-    
   };
 
   const handleInputClick = (isStart) => {
@@ -165,12 +164,20 @@ function Home() {
     setTimeout(initializeMap, 0);
   };
 
-  const handleGo = () => {
-    if (startPoint.name && endPoint.name) {
+  const handleAvoidInfo = (avoidCategories) =>{
+    console.log(avoidCategories);
+    
+    setAvoidCategories(avoidCategories)
+  }
+ 
+  const handleGo= () => {
+    if ((startPoint.name && endPoint.name) || avoidCategories) {
+      
       navigate('/map', { 
         state: { 
           startPoint,
-          endPoint
+          endPoint,
+          avoidCategories
         } 
       });
     }
@@ -184,7 +191,6 @@ function Home() {
     setShowFilterModal(!showFilterModal);
   };
 
-
   return (
     <PageContainer>
       <Header />
@@ -194,7 +200,7 @@ function Home() {
         <LocationInputs
           startPoint={startPoint}
           endPoint={endPoint}
-          avoidPlaces={avoidCategories}
+          avoidCategories={avoidCategories}
           handleInputClick={handleInputClick}
           handleGo={handleGo}
           handleFilterModal={handleFilterModal}
@@ -221,8 +227,7 @@ function Home() {
       )}
       {showFilterModal&& (
         <FilterModal 
-        avoidCategories={avoidCategories} 
-        setAvoidCategories={setAvoidCategories} 
+        avoidCategoryInfo={handleAvoidInfo}
         onClose={() => {
           setShowFilterModal(false);
         }}

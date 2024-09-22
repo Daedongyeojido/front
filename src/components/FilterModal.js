@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import styled from 'styled-components';
 import TitleBar from './TitleBar';
@@ -66,28 +66,40 @@ const ButtonContainer = styled.div`
     margin-top: 10px;
 
 `
-const FilterModal = ({ avoidCategories ={} , setAvoidCategories , onClose }) => {
-  const categories = {
+const FilterModal = ({onClose, avoidCategoryInfo}) => {
+  const [avoidCategories, setAvoidCategories] = useState([]);
+  const [filtered, setFiltered] = useState([])
+  const avoidPlaceInfo = {
     식사: ['샐러드', '샌드위치','비건 식당', '생과일 주스'],
     문화: ['미술관', '전시', '베이킹', '영화'],
     휴식: ['도서관 ', '북카페', '찻집', '공원','사찰'],
     운동: ['볼링', '클라이밍','수영','야구','사격']
   };
 
-  const handleSeclectedPlace = (category, item) => {
-    const newFilters = { ...avoidCategories  };
+  const handleSeclectedPlace = (category, genre ) => {
 
+    const newFilters = { ...avoidCategories  };
+    
     if (!newFilters[category]) {
       newFilters[category] = [];
-    }
+    } 
 
-    if (newFilters[category].includes(item)) {
-      newFilters[category] = newFilters[category].filter(i => i !== item);
+    // 카테고리 빼기 
+    if (newFilters[category].includes(genre)) {
+      newFilters[category] = newFilters[category].filter(item => item !== genre);
+
+    //선택한 카테고리 추가
     } else {
-      newFilters[category].push(item);
+      newFilters[category].push(genre);
     }
     setAvoidCategories(newFilters);
+    setFiltered(newFilters[category])    
   };
+
+  const sendCategoryInfoToParent = () => {
+    const Filtered = filtered;
+    avoidCategoryInfo(Filtered);
+  }
 
   return (
     <Modal onClick={onClose}>
@@ -97,10 +109,10 @@ const FilterModal = ({ avoidCategories ={} , setAvoidCategories , onClose }) => 
           height='3px'
           border='1.5px solid #B9D673'>
         </TitleBar>
-        {Object.keys(categories).map((category) => (
+        {Object.keys(avoidPlaceInfo).map((category) => (
           <div key={category}>
             <h3>{category}</h3>
-            {categories[category].map((item) => (
+            {avoidPlaceInfo[category].map((item) => (
               <CategoryButton
                 key={item}
                 selected={avoidCategories[category] && avoidCategories[category].includes(item)}
@@ -131,10 +143,11 @@ const FilterModal = ({ avoidCategories ={} , setAvoidCategories , onClose }) => 
               backgroundColor='#B9D673'
               fontSize= '17px'
               color= 'white'
-              onClick = {()=> {
-                console.log(avoidCategories);
+              onClick = { () => {
+                sendCategoryInfoToParent();
                 onClose();
-              }}>적용</Button> 
+              }}>
+                적용</Button> 
         </ButtonContainer>
       </ModalContent>
     </Modal>
