@@ -1,27 +1,25 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-import styled from 'styled-components';
-import TitleBar from './TitleBar';
-import Button from './Button';
-
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import TitleBar from "./TitleBar";
+import Button from "./Button";
 
 const Modal = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    cursor: pointer; 
-`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+`;
 const ModalContent = styled.div`
-  background-color: #FAF9FD;
+  background-color: #faf9fd;
   padding: 20px 60px;
   width: 70%;
   max-width: 400px;
@@ -30,92 +28,93 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 1001;
-  border: 1px solid #B9D673;
+  border: 1px solid #b9d673;
   border-radius: 90px;
   scroll-behavior: auto;
   cursor: default;
-  overflow-y: auto; 
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
-`
+`;
 const CategoryButton = styled.button`
-  background-color: ${props => props.selected ? '#B9D673' : '#FAF9FD'};
-  color: ${props => props.selected ? 'white' : 'black'};
+  background-color: ${(props) => (props.selected ? "#B9D673" : "#FAF9FD")};
+  color: ${(props) => (props.selected ? "white" : "black")};
   width: auto;
-  min-width: 30%; 
+  min-width: 30%;
   height: 40px;
-  border: ${props => props.selected ? 'none' : '1px solid #B9D673'};
+  border: ${(props) => (props.selected ? "none" : "1px solid #B9D673")};
   font-size: 17px;
   margin: 0px 5px 5px 0px;
   border-radius: 20px;
   padding: 0 10px;
-  &:hover{
-    background-color: ${props => props.selected ? 'none' : 'rgba(217, 217, 217, 0.37)'};
+  &:hover {
+    background-color: ${(props) =>
+      props.selected ? "none" : "rgba(217, 217, 217, 0.37)"};
   }
   align-items: center;
-  justify-content: center; 
-`
+  justify-content: center;
+`;
 const ButtonContainer = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content:space-around;
-    margin-top: 10px;
-
-`
-const FilterModal = ({onClose, avoidCategoryInfo}) => {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10px;
+`;
+const FilterModal = ({ onClose, avoidCategoryInfo }) => {
   const [avoidCategories, setAvoidCategories] = useState([]);
-  const [filtered, setFiltered] = useState([])
+  const [filtered, setFiltered] = useState([]);
   const avoidPlaceInfo = {
-    식사: ['샐러드', '샌드위치','비건 식당', '생과일 주스'],
-    문화: ['미술관', '전시', '베이킹', '영화'],
-    휴식: ['도서관 ', '북카페', '찻집', '공원','사찰'],
-    운동: ['볼링', '클라이밍','수영','야구','사격']
+    식사: ["샐러드", "샌드위치", "비건 식당", "생과일 주스"],
+    문화: ["미술관", "전시", "베이킹", "영화"],
+    휴식: ["도서관 ", "북카페", "찻집", "공원", "사찰"],
+    운동: ["볼링", "클라이밍", "수영", "야구", "사격"],
   };
 
-  const handleSeclectedPlace = (category, genre ) => {
+  const handleSeclectedPlace = (category, genre) => {
+    const newFilters = { ...avoidCategories };
 
-    const newFilters = { ...avoidCategories  };
-    
     if (!newFilters[category]) {
       newFilters[category] = [];
-    } 
+    }
 
-    // 카테고리 빼기 
+    // 카테고리 빼기
     if (newFilters[category].includes(genre)) {
-      newFilters[category] = newFilters[category].filter(item => item !== genre);
+      newFilters[category] = newFilters[category].filter(
+        (item) => item !== genre
+      );
 
-    //선택한 카테고리 추가
+      //선택한 카테고리 추가
     } else {
       newFilters[category].push(genre);
     }
     setAvoidCategories(newFilters);
-    setFiltered(newFilters[category])    
+    setFiltered(newFilters[category]);
   };
 
   const sendCategoryInfoToParent = () => {
     const Filtered = filtered;
     avoidCategoryInfo(Filtered);
-  }
+  };
 
   return (
     <Modal onClick={onClose}>
-      <ModalContent onClick={e => e.stopPropagation()}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
         <h2>장소</h2>
-        <TitleBar
-          height='3px'
-          border='1.5px solid #B9D673'>
-        </TitleBar>
+        <TitleBar height="3px" border="1.5px solid #B9D673"></TitleBar>
         {Object.keys(avoidPlaceInfo).map((category) => (
           <div key={category}>
             <h3>{category}</h3>
             {avoidPlaceInfo[category].map((item) => (
               <CategoryButton
                 key={item}
-                selected={avoidCategories[category] && avoidCategories[category].includes(item)}
+                selected={
+                  avoidCategories[category] &&
+                  avoidCategories[category].includes(item)
+                }
                 onClick={() => handleSeclectedPlace(category, item)}
               >
                 {item}
@@ -125,29 +124,32 @@ const FilterModal = ({onClose, avoidCategoryInfo}) => {
         ))}
         <ButtonContainer>
           <Button
-            width= '45%'
-            height= '45px'
-            customStyle= 'border: 1px solid #B9D673' 
-            borderRadius='30px'
-            backgroundColor= 'transparent'
+            width="45%"
+            height="45px"
+            customStyle="border: 1px solid #B9D673"
+            borderRadius="30px"
+            backgroundColor="transparent"
             fontSize="17px"
-            color=' #B9D673'
-            onClick={() => setAvoidCategories({})} //초기화 
-              >
-            초기화 </Button>
-            <Button
-              width = '45%'
-              height= '45px'
-              border= '1px solid #B9D673'
-              borderRadius= '30px'
-              backgroundColor='#B9D673'
-              fontSize= '17px'
-              color= 'white'
-              onClick = { () => {
-                sendCategoryInfoToParent();
-                onClose();
-              }}>
-                적용</Button> 
+            color=" #B9D673"
+            onClick={() => setAvoidCategories({})} //초기화
+          >
+            초기화{" "}
+          </Button>
+          <Button
+            width="45%"
+            height="45px"
+            border="1px solid #B9D673"
+            borderRadius="30px"
+            backgroundColor="#B9D673"
+            fontSize="17px"
+            color="white"
+            onClick={() => {
+              sendCategoryInfoToParent();
+              onClose();
+            }}
+          >
+            적용
+          </Button>
         </ButtonContainer>
       </ModalContent>
     </Modal>

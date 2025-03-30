@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserMail } from '../../../apis/usermail'; 
-import { Logout } from '../../../apis/logout';
-import styled from 'styled-components';
-import { PageContainer, ContentContainer } from '../../../components/Layout';
-import AppBar from '../../../components/AppBar';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserMail } from "../../../apis/usermail";
+import { Logout } from "../../../apis/logout";
+import styled from "styled-components";
+import { PageContainer, ContentContainer } from "../../../components/Layout";
+import AppBar from "../../../components/AppBar";
 
 const UserInfo = styled.div`
   .name {
@@ -21,7 +21,8 @@ const UserInfo = styled.div`
     margin-top: 50px;
   }
 
-  .userEmail1, .userEmail2 {
+  .userEmail1,
+  .userEmail2 {
     font-size: 15px;
     font-weight: bold;
     margin-top: 40px;
@@ -54,10 +55,7 @@ const ErrorMessage = styled.p`
 
 function Mypage() {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({
-    nickname: '',
-    email: ''
-  });
+  const [userInfo, setUserInfo] = useState({ nickname: "", email: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -68,12 +66,12 @@ function Mypage() {
         const data = await UserMail();
 
         setUserInfo({
-          nickname: data.nickname || 'MyUser',
-          email: data.email || 'No Email'
+          nickname: data.nickname || "MyUser",
+          email: data.email || "No Email",
         });
       } catch (error) {
-        console.error('Failed to fetch user info', error);
-        setErrors({ general: error.message || 'Failed to fetch user info' });
+        console.error("Failed to fetch user info", error);
+        setErrors({ general: error.message || "Failed to fetch user info" });
       } finally {
         setLoading(false);
       }
@@ -83,7 +81,7 @@ function Mypage() {
   }, []);
 
   const handleMyPathClick = () => {
-    navigate('/mypath');
+    navigate("/mypath");
   };
 
   const handleLogoutClick = async () => {
@@ -91,33 +89,37 @@ function Mypage() {
     try {
       // Call the logout API
       await Logout();
-  
+
       // Clear tokens from local storage after successful logout
-      localStorage.removeItem('refresh');
-      localStorage.removeItem('access');
-  
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("access");
+
       // Redirect to the sign-in page
-      navigate('/signin');
+      navigate("/signin");
     } catch (error) {
-      console.error('Failed to log out', error);
-      setErrors({ general: error.message || 'Failed to log out' });
+      console.error("Failed to log out", error);
+      setErrors({ general: error.message || "Failed to log out" });
     } finally {
       setLoading(false);
     }
-  };  
-  
+  };
+
   return (
     <PageContainer>
-      <AppBar title='마이페이지' />
+      <AppBar title="마이페이지" />
       <ContentContainer>
         <UserInfo>
-          <div className='name'>
-            {loading ? 'Loading...' : userInfo.nickname ? `${userInfo.nickname}님 안녕하세요!` : 'MyUser'}
+          <div className="name">
+            {loading
+              ? "Loading..."
+              : userInfo.nickname
+                ? `${userInfo.nickname}님 안녕하세요!`
+                : "MyUser"}
           </div>
-          <div className='userSetting'>
-            <div className='userEmail1'>이메일</div>
-            <div className='userEmail2'>
-              {loading ? 'Loading...' : userInfo.email || 'No Email'}
+          <div className="userSetting">
+            <div className="userEmail1">이메일</div>
+            <div className="userEmail2">
+              {loading ? "Loading..." : userInfo.email || "No Email"}
             </div>
           </div>
         </UserInfo>

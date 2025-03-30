@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 import { FaQuestionCircle, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ const IconWrapper = styled.div`
   font-size: 24px;
   color: #333;
   &:hover {
-    color: #B9D673;
+    color: #b9d673;
   }
 `;
 

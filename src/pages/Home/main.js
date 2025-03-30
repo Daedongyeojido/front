@@ -1,16 +1,14 @@
 /* eslint-disable no-undef */
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import Hand from '../../Image/Hand.png';
+import Hand from "../../Image/Hand.png";
 import { useNavigate } from "react-router-dom";
 import { PageContainer, ContentContainer } from "../../components/Layout";
 import TopContainer from "../../components/TopContainer";
 import LocationInputs from "../../components/LocationInputs";
 import SearchModal from "../../components/SearchModal";
-import Rank from '../../components/Rank';
+import Rank from "../../components/Rank";
 import FilterModal from "../../components/FilterModal";
-
-// import axios from 'axios';
 
 const Header = styled.div`
   width: 100%;
@@ -34,15 +32,15 @@ const FootPrintImg = styled.div`
 `;
 
 const HandImg = styled.img`
-    width: 34px;
-    height: 34px;
-    margin-left: 10px;
-`
+  width: 34px;
+  height: 34px;
+  margin-left: 10px;
+`;
 const RankContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
 function Home() {
   const [startPoint, setStartPoint] = useState({ name: "", x: 0, y: 0 });
   const [endPoint, setEndPoint] = useState({ name: "", x: 0, y: 0 });
@@ -54,7 +52,7 @@ function Home() {
   const [isStartSearch, setIsStartSearch] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [isSearched, setIsSearched] = useState(false);
-  const [avoidCategories, setAvoidCategories] = useState([]); 
+  const [avoidCategories, setAvoidCategories] = useState([]);
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const navigate = useNavigate();
@@ -81,13 +79,12 @@ function Home() {
     if (!kakaoLoaded) return;
 
     const container = document.getElementById("map");
-    
+
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 3,
     };
     mapRef.current = new kakao.maps.Map(container, options);
-    
   };
   const handleSearch = () => {
     if (!kakaoLoaded) return;
@@ -116,7 +113,7 @@ function Home() {
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
     // console.log('place', place);
-    
+
     const moveLatLng = new kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(moveLatLng);
 
@@ -132,20 +129,20 @@ function Home() {
   const handleConfirmSelection = () => {
     if (selectedPlace) {
       // console.log('selectedPalce',selectedPlace);
-      
+
       if (isStartSearch) {
         setStartPoint({
           name: selectedPlace.place_name,
-          x: selectedPlace.x, 
-          y: selectedPlace.y,  
-          address: selectedPlace.address_name
+          x: selectedPlace.x,
+          y: selectedPlace.y,
+          address: selectedPlace.address_name,
         });
       } else {
         setEndPoint({
           name: selectedPlace.place_name,
           x: selectedPlace.x,
           y: selectedPlace.y,
-          address: selectedPlace.address_name 
+          address: selectedPlace.address_name,
         });
       }
       setShowModal(false);
@@ -164,22 +161,15 @@ function Home() {
     setTimeout(initializeMap, 0);
   };
 
-  const handleAvoidInfo = (avoidCategories) =>{
+  const handleAvoidInfo = (avoidCategories) => {
     console.log(avoidCategories);
-    
-    setAvoidCategories(avoidCategories)
-  }
- 
-  const handleGo= () => {
+
+    setAvoidCategories(avoidCategories);
+  };
+
+  const handleGo = () => {
     if ((startPoint.name && endPoint.name) || avoidCategories) {
-      
-      navigate('/map', { 
-        state: { 
-          startPoint,
-          endPoint,
-          avoidCategories
-        } 
-      });
+      navigate("/map", { state: { startPoint, endPoint, avoidCategories } });
     }
   };
 
@@ -207,10 +197,10 @@ function Home() {
         />
 
         <RankContainer>
-            <h2>추천 장소 만족도 순위</h2>
-            <HandImg src={Hand}></HandImg>
+          <h2>추천 장소 만족도 순위</h2>
+          <HandImg src={Hand}></HandImg>
         </RankContainer>
-        <Rank /> 
+        <Rank />
       </ContentContainer>
       {showModal && (
         <SearchModal
@@ -225,13 +215,14 @@ function Home() {
           onClose={handleModalClose}
         />
       )}
-      {showFilterModal&& (
-        <FilterModal 
-        avoidCategoryInfo={handleAvoidInfo}
-        onClose={() => {
-          setShowFilterModal(false);
-        }}
-        />)}
+      {showFilterModal && (
+        <FilterModal
+          avoidCategoryInfo={handleAvoidInfo}
+          onClose={() => {
+            setShowFilterModal(false);
+          }}
+        />
+      )}
     </PageContainer>
   );
 }

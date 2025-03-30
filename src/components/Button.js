@@ -1,32 +1,34 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledButton = styled.button`
-  width: ${props => props.width || '100%'};
-  height: ${props => props.height || '55px'};
+  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height || "55px"};
   border: none;
-  border-radius: ${props => props.borderRadius || '12px'};
-  color: ${props => props.color || 'white'};
-  font-size: ${props => props.fontSize || '20px'};
-  font-weight: ${props => props.fontWeight || '600'};
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  border-radius: ${(props) => props.borderRadius || "12px"};
+  color: ${(props) => props.color || "white"};
+  font-size: ${(props) => props.fontSize || "20px"};
+  font-weight: ${(props) => props.fontWeight || "600"};
+  font-family: "IBM Plex Sans KR", sans-serif;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: ${props => props.marginBottom || '18px'};
-  margin-top: ${props => props.marginTop || '18px'};
-  background-color: ${props => props.backgroundColor || props.theme.buttonColor};
+  margin-bottom: ${(props) => props.marginBottom || "18px"};
+  margin-top: ${(props) => props.marginTop || "18px"};
+  background-color: ${(props) =>
+    props.backgroundColor || props.theme.buttonColor};
   &:active {
-    background-color: ${props => props.activeBackgroundColor || props.theme.mainColor};
+    background-color: ${(props) =>
+      props.activeBackgroundColor || props.theme.mainColor};
   }
-  ${props => props.customStyle}
+  ${(props) => props.customStyle}
 `;
 
-const Button = ({ 
-  onClick, 
-  children, 
+const Button = ({
+  onClick,
+  children,
   width,
   height,
   borderRadius,
@@ -38,10 +40,10 @@ const Button = ({
   backgroundColor,
   activeBackgroundColor,
   customStyle,
-  ...props 
+  ...props
 }) => {
   return (
-    <StyledButton 
+    <StyledButton
       onClick={onClick}
       width={width}
       height={height}

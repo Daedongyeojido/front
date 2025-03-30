@@ -1,32 +1,32 @@
-import instance from './instance';
+import instance from "./instance";
 
 export const fetchHashtagList = async () => {
   try {
-    console.log('Fetching hashtag list...');
-    const response = await instance.get('/users/hashtagList', {
+    console.log("Fetching hashtag list...");
+    const response = await instance.get("/users/hashtagList", {
       validateStatus: (status) => status < 500,
     });
-    console.log('Response data:', response.data);
+    console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
-    console.error('Fetch hashtag list error:', error);
+    console.error("Fetch hashtag list error:", error);
 
     if (error.response) {
       const { status, data } = error.response;
-      console.log('Error response data:', data);
+      console.log("Error response data:", data);
 
-      let errorMessage = 'Error fetching hashtag list';
+      let errorMessage = "Error fetching hashtag list";
 
       switch (status) {
         case 404:
-          errorMessage = 'Endpoint not found';
+          errorMessage = "Endpoint not found";
           break;
         case 403:
-          errorMessage = 'Forbidden access';
+          errorMessage = "Forbidden access";
           break;
         default:
           if (data.errorList && data.errorList.length > 0) {
-            errorMessage = data.errorList.join('\n');
+            errorMessage = data.errorList.join("\n");
           }
           break;
       }
@@ -34,6 +34,6 @@ export const fetchHashtagList = async () => {
       throw new Error(errorMessage);
     }
 
-    throw new Error('Unexpected error fetching hashtag list');
+    throw new Error("Unexpected error fetching hashtag list");
   }
 };

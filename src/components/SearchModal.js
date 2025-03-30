@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useRef, useEffect } from "react";
+import styled from "styled-components";
 import Button from "./Button";
 
 const ModalOverlay = styled.div`
@@ -25,7 +25,8 @@ const ModalContent = styled.div`
   max-height: 600px;
   display: flex;
   flex-direction: column;
-  z-index: 1001;`;
+  z-index: 1001;
+`;
 
 const MapContainer = styled.div`
   width: 100%;
@@ -49,13 +50,14 @@ const InputBox = styled.input`
   outline: none;
   &:focus {
     outline: none;
-    border-color: #B9D673;
+    border-color: #b9d673;
   }
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: ${(props) => props.isSearched ? "space-between" : "center"};
+  justify-content: ${(props) =>
+    props.isSearched ? "space-between" : "center"};
   width: 100%;
   flex-shrink: 0;
 `;
@@ -87,7 +89,7 @@ const SearchModal = ({
   selectedPlace,
   searchResults,
   handlePlaceSelect,
-  onClose
+  onClose,
 }) => {
   const modalRef = useRef();
 
@@ -104,68 +106,68 @@ const SearchModal = ({
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideClick);
-    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleTouchStart);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleTouchStart);
     };
   }, [onClose]);
 
   return (
-
-  <ModalOverlay>
-    <ModalContent ref={modalRef}>
-      <MapContainer id="map" />
-      <InputBox
-        placeholder="장소를 검색하세요"
-        value={searchKeyword}
-        onChange={(e) => setSearchKeyword(e.target.value)}
-      />
-      <ButtonGroup isSearched={isSearched}>
-        <Button
-          onClick={handleSearch}
-          width={isSearched ? "48%" : "100%"}
-          height="45px"
-          fontSize="15px"
-          marginTop="5px"
-          marginBottom="5px"
-        >
-          {isSearched ? "재검색" : "검색"}
-        </Button>
-        {isSearched && (
+    <ModalOverlay>
+      <ModalContent ref={modalRef}>
+        <MapContainer id="map" />
+        <InputBox
+          placeholder="장소를 검색하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <ButtonGroup isSearched={isSearched}>
           <Button
-            onClick={handleConfirmSelection}
-            disabled={!selectedPlace}
-            width="48%"
+            onClick={handleSearch}
+            width={isSearched ? "48%" : "100%"}
             height="45px"
             fontSize="15px"
-            backgroundColor={selectedPlace ? "#B9D673" : "#EEEEEE"}
-            color="white"
             marginTop="5px"
             marginBottom="5px"
           >
-            선택
+            {isSearched ? "재검색" : "검색"}
           </Button>
-        )}
-      </ButtonGroup>
-      <SearchResultContainer>
-        {searchResults && searchResults.map((place) => (
-          <SearchResult
-            key={place.id}
-            onClick={() => handlePlaceSelect(place)}
-            style={{
-              backgroundColor:
-                selectedPlace && selectedPlace.id === place.id
-                  ? "#e0e0e0"
-                  : "transparent",
-            }}
-          >
-            {place.place_name} ({place.address_name})
-          </SearchResult>
-        ))}
-      </SearchResultContainer>
+          {isSearched && (
+            <Button
+              onClick={handleConfirmSelection}
+              disabled={!selectedPlace}
+              width="48%"
+              height="45px"
+              fontSize="15px"
+              backgroundColor={selectedPlace ? "#B9D673" : "#EEEEEE"}
+              color="white"
+              marginTop="5px"
+              marginBottom="5px"
+            >
+              선택
+            </Button>
+          )}
+        </ButtonGroup>
+        <SearchResultContainer>
+          {searchResults &&
+            searchResults.map((place) => (
+              <SearchResult
+                key={place.id}
+                onClick={() => handlePlaceSelect(place)}
+                style={{
+                  backgroundColor:
+                    selectedPlace && selectedPlace.id === place.id
+                      ? "#e0e0e0"
+                      : "transparent",
+                }}
+              >
+                {place.place_name} ({place.address_name})
+              </SearchResult>
+            ))}
+        </SearchResultContainer>
       </ModalContent>
     </ModalOverlay>
   );

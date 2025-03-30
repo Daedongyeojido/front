@@ -1,40 +1,44 @@
-import instance from './instance';
+import instance from "./instance";
 
 export const Logout = async () => {
   try {
-    const refreshToken = localStorage.getItem('refresh');
+    const refreshToken = localStorage.getItem("refresh");
     if (!refreshToken) {
-      throw new Error('No refresh token available.');
+      throw new Error("No refresh token available.");
     }
 
-    console.log('Attempting to log out with token:', refreshToken);
+    console.log("Attempting to log out with token:", refreshToken);
 
     // Adjust payload or headers based on backend expectations
-    const response = await instance.post('/users/logout/', {
-      refresh: refreshToken // Adjust payload according to backend needs
-    }, {
-      headers: {
-        'Content-Type': 'application/json' // Ensure correct content type
+    const response = await instance.post(
+      "/users/logout/",
+      {
+        refresh: refreshToken, // Adjust payload according to backend needs
+      },
+      {
+        headers: {
+          "Content-Type": "application/json", // Ensure correct content type
+        },
       }
-    });
+    );
 
-    console.log('Logout response status:', response.status);
+    console.log("Logout response status:", response.status);
     if (response.status === 200) {
-      console.log('Logout successful');
+      console.log("Logout successful");
     } else {
-      console.warn('Logout response status:', response.status);
+      console.warn("Logout response status:", response.status);
     }
 
     // Clean up local storage
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
 
     return response.data;
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
     if (error.response && error.response.data) {
-      console.error('Logout error details:', error.response.data);
+      console.error("Logout error details:", error.response.data);
     }
-    throw new Error('Failed to log out.');
+    throw new Error("Failed to log out.");
   }
 };

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 import Button from "./Button";
-import Departure from '../Image/DepartureImg.png';
-import Arrival from '../Image/ArrivalImg.png';
+import Departure from "../Image/DepartureImg.png";
+import Arrival from "../Image/ArrivalImg.png";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -23,7 +23,7 @@ const Container = styled.div`
 const InputContainer = styled.div`
   width: 85%;
   height: 50px;
-  background-color: ${props => props.backgroundColor || '#FBFBFB'};
+  background-color: ${(props) => props.backgroundColor || "#FBFBFB"};
   border-radius: 30px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -40,7 +40,7 @@ const Icon = styled.img`
 `;
 
 const InputBox = styled.input`
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-family: "IBM Plex Sans KR", sans-serif;
   width: 100%;
   height: 100%;
   font-size: 15px;
@@ -48,26 +48,24 @@ const InputBox = styled.input`
   border: none;
   outline: none;
   &:focus {
-    border-color: #B9D673;
+    border-color: #b9d673;
   }
 `;
 
-const LocationInputs = ({ startPoint, endPoint, avoidCategories, handleInputClick, handleFilterModal }) => {
-  const navigate = useNavigate();  
-  
+const LocationInputs = ({
+  startPoint,
+  endPoint,
+  avoidCategories,
+  handleInputClick,
+  handleFilterModal,
+}) => {
+  const navigate = useNavigate();
+
   const handleGo = () => {
-    if ((startPoint.name && endPoint.name) || avoidCategories) {      
-      navigate('/map', { 
-        state: { 
-          startPoint,
-          endPoint,
-          avoidCategories
-        } 
-      });
+    if ((startPoint.name && endPoint.name) || avoidCategories) {
+      navigate("/map", { state: { startPoint, endPoint, avoidCategories } });
     }
     console.log();
-    
-
   };
 
   return (
@@ -91,29 +89,30 @@ const LocationInputs = ({ startPoint, endPoint, avoidCategories, handleInputClic
         />
       </InputContainer>
 
-      <InputContainer backgroundColor='#EEEEEE'>
+      <InputContainer backgroundColor="#EEEEEE">
         <Icon src={Arrival} alt="도착" />
         <InputBox
           placeholder="추천받고 싶은 않은 장소가 있어요! (선택)"
           value={avoidCategories}
-          onClick={()=>handleFilterModal(true)}
+          onClick={() => handleFilterModal(true)}
           readOnly
         />
       </InputContainer>
 
-      <Button 
+      <Button
         fontSize="20px"
         width="60%"
         height="49px"
         borderradius="30px"
-        backgroundColor={startPoint.name && endPoint.name ? "#B9D673" : "#CCCCCC"}
+        backgroundColor={
+          startPoint.name && endPoint.name ? "#B9D673" : "#CCCCCC"
+        }
         onClick={handleGo}
         disabled={!startPoint.name || !endPoint.name}
       >
         GO
       </Button>
     </Container>
-
   );
 };
 

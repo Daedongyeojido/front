@@ -1,17 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-
 
 const AppBarContainer = styled.div`
   display: flex;
   align-items: center;
   height: 56px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 0 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
@@ -40,18 +38,13 @@ function AppBar({ title }) {
   return (
     <AppBarContainer>
       <BackButton>
-        <FontAwesomeIcon
-          icon={faAngleLeft}
-          onClick={goBack}
-        />
-      </BackButton>      
+        <FontAwesomeIcon icon={faAngleLeft} onClick={goBack} />
+      </BackButton>
       <Title>{title}</Title>
     </AppBarContainer>
   );
 }
 
-AppBar.propTypes = {
-  title: PropTypes.string.isRequired,
-};
+AppBar.propTypes = { title: PropTypes.string.isRequired };
 
 export default AppBar;

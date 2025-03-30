@@ -1,14 +1,13 @@
 // recoil/atoms.js
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export const userState = atom({
-    key: 'userState',
-    default: {
-        email: '',
-        password: '',
-        nickname: '',
-        isLoggedIn: false,
-        isRegistered: false,
-    },
+  key: "userState",
+  default: {
+    email: "",
+    password: "",
+    nickname: "",
+    isLoggedIn: false,
+    isRegistered: false,
+  },
 });
-

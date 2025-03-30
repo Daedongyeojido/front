@@ -1,43 +1,43 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const InputContainer = styled.div`
-  height: ${props => props.height || '55px'};
-  padding: ${props => props.padding || '2px 15px 0'};
-  background-color: ${props => props.backgroundColor || 'white'};
-  border-radius: ${props => props.borderRadius || '12px'};
-  border: ${props => props.border || `1px solid ${props.theme.lightgrayColor}`};
+  height: ${(props) => props.height || "55px"};
+  padding: ${(props) => props.padding || "2px 15px 0"};
+  background-color: ${(props) => props.backgroundColor || "white"};
+  border-radius: ${(props) => props.borderRadius || "12px"};
+  border: ${(props) =>
+    props.border || `1px solid ${props.theme.lightgrayColor}`};
   display: flex;
   align-items: center;
-  width: ${props => props.width || '100%'};
-  margin-top: ${props => props.marginTop || '0'};
-  margin-bottom: ${props => props.marginBottom || '0'};
-  ${props => props.customStyle}
-
+  width: ${(props) => props.width || "100%"};
+  margin-top: ${(props) => props.marginTop || "0"};
+  margin-bottom: ${(props) => props.marginBottom || "0"};
+  ${(props) => props.customStyle}
 `;
 
 const StyledInput = styled.input`
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-family: "IBM Plex Sans KR", sans-serif;
   width: 100%;
   border: none;
   outline: none;
-  font-size: ${props => props.fontSize || '16px'};
+  font-size: ${(props) => props.fontSize || "16px"};
   background-color: transparent;
   &::placeholder {
-    color: ${props => props.placeholderColor || props.theme.lightgrayColor};
+    color: ${(props) => props.placeholderColor || props.theme.lightgrayColor};
   }
 `;
 
 const SuffixText = styled.span`
-  font-size: ${props => props.suffixFontSize || '14px'};
-  color: ${props => props.suffixColor || props.theme.lightgrayColor};
+  font-size: ${(props) => props.suffixFontSize || "14px"};
+  color: ${(props) => props.suffixColor || props.theme.lightgrayColor};
 `;
 
 const LoginTextFrom = ({
   value,
   onChange,
-  type = 'text',
+  type = "text",
   placeholder,
   validator,
   maxLength,
@@ -54,13 +54,12 @@ const LoginTextFrom = ({
   suffixFontSize,
   suffixColor,
   customStyle,
-  fontFamily,
   ...props
 }) => {
-  const [inputValue, setInputValue] = useState(value || '');
+  const [inputValue, setInputValue] = useState(value || "");
 
   useEffect(() => {
-    setInputValue(value || '');
+    setInputValue(value || "");
   }, [value]);
 
   const handleChange = (e) => {
@@ -104,10 +103,7 @@ const LoginTextFrom = ({
         {...props}
       />
       {getSuffixText() && (
-        <SuffixText
-          suffixFontSize={suffixFontSize}
-          suffixColor={suffixColor}
-        >
+        <SuffixText suffixFontSize={suffixFontSize} suffixColor={suffixColor}>
           {getSuffixText()}
         </SuffixText>
       )}
